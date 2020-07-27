@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Master">
+
+	<resultMap type="Employee" id="EmployeeResultSet">
+		<id property="emp_no" column="EMP_NO" />
+		<result property="emp_id" column="EMP_ID" />
+		<result property="emp_pwd" column="EMP_PWD" />
+		<result property="emp_name" column="EMP_NAME" />
+		<result property="birth" column="BIRTH" />
+		<result property="gender" column="GENDER" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+		<result property="address" column="ADDRESS" />
+		<result property="join_date" column="JOIN_DATE" />
+		<result property="withdraw_date" column="WITHDRAW_DATE" />
+		<result property="emp_status" column="EMP_STATUS" />
+		<result property="dept_code" column="DEPT_CODE" />
+		<result property="dept_name" column="DEPT_NAME" />
+		<result property="emp_level_code" column="EMP_LEVEL_CODE" />
+		<result property="emp_level_name" column="EMP_LEVEL_NAME" />
+
+		<result property="school_name" column="SCHOOL_NAME" />
+		<result property="major" column="MAJOR" />
+		<result property="grade" column="GRADE" />
+		<result property="total_career" column="TOTAL_CAREER" />
+		<result property="status" column="STATUS" />
+		<result property="skill_name" column="SKILL_NAME" />
+		<result property="keyword_name" column="KEYWORD_NAME" />
+		<result property="etc" column="ETC" />
+
+		<collection property="profileImg"
+			resultMap="AttachmentResultSet" />
+		<collection property="login"
+			resultMap="Login_HistoryYResultSet" />
+		<collection property="mody" resultMap="Emp_ModifyResultSet" />
+	</resultMap>
+
+	<!-- 마스터 사원조회 -->
+	<select id="getMasterListCount" resultType="int" parameterType="Employee">
+		SELECT COUNT(*)
+		FROM employee
+		WHERE EMP_LEVEL_CODE != 1
+		<if test="emp_name != null">
+			AND EMP_NAME LIKE CONCAT('%', #{ emp_name }, '%')
+		</if>
+		<if test="emp_level_code != 0">
+			<choose>
+				<when test="emp_level_code > 3">
+					AND EMP_LEVEL_CODE = #{ emp_level_code }
+				</when>
+				<otherwise>
+					AND EMP_LEVEL_CODE BETWEEN 2 AND 3
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+
+	<select id="getMasterList" resultType="Employee" parameterType="Employee">
+		SELECT em.*
+		FROM (
+			SELECT e1.DEPT_NAME, e1.EMP_NO, e1.EMP_ID, e1.EMP_NAME, e1.EMP_LEVEL_CODE, e1.EMP_LEVEL_NAME
+			FROM (
+				SELECT E.*, D.DEPT_NAME, L.EMP_LEVEL_NAME
+				FROM employee E
+				JOIN department D ON (E.DEPT_CODE = D.DEPT_CODE)
+				JOIN emp_level L ON (E.EMP_LEVEL_CODE = L.EMP_LEVEL_CODE)
+				WHERE E.EMP_LEVEL_CODE != 1
+				<if test="emp.emp_name != null">
+					AND E.EMP_NAME LIKE CONCAT('%', #{ emp.emp_name }, '%')
+				</if>
+				<if test="emp.emp_level_code != 0">
+					<choose>
+						<when test="emp.emp_level_code > 3">
+							AND E.EMP_LEVEL_CODE = #{ emp.emp_level_code }
+						</when>
+						<otherwise>
+							AND E.EMP_LEVEL_CODE BETWEEN 2 AND 3
+						</otherwise>
+					</choose>
+				</if>
+				) e1, employee e2
+				WHERE e1.EMP_NO = e2.EMP_NO
+				ORDER BY e1.EMP_NO DESC
+				LIMIT #{ pi.limitStart }, #{ pi.limit }
+			) em
+	</select>
+
+	<update id="changeEmpLevel" parameterType="Employee">
+		UPDATE employee
+		SET EMP_LEVEL_CODE = #{ emp_level_code }
+		<choose>
+			<when test="emp_level_code == 5">
+				, EMP_STATUS = 'N'
+				, WITHDRAW_DATE = CURRENT_TIMESTAMP
+			</when>
+			<otherwise>
+				, EMP_STATUS = 'Y'
+				, WITHDRAW_DATE = null
+			</otherwise>
+		</choose>
+		WHERE EMP_NO = #{ emp_no }
+	</update>
+	
+	<select id="empInfoSearch" resultType="Employee">
+		SELECT EMP_ID, EMP_NAME, EMAIL
+		FROM employee
+		WHERE EMP_NO = #{ emp_no }
+	</select>
+
+</mapper>

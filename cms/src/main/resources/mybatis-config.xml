@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0/EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.nd.cms.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Login_History" alias="Login_History"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Emp_Modify" alias="Emp_Modify"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.Department" alias="Department"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Degree" alias="Degree"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Graduate_Status" alias="Graduate_Status"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.Military_Service" alias="Military_Service"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Military_Group" alias="Military_Group"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Militaty_Rank" alias="Militaty_Rank"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Discharge" alias="Discharge"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.Education_Status" alias="Education_Status"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.License_List" alias="License_List"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.Skill" alias="Skill"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Skill_Type" alias="Skill_Type"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Keyword" alias="Keyword"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.School" alias="School"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Military" alias="Military"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Education" alias="Education"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.License" alias="License"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.Career" alias="Career"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Project" alias="Project"/>
+		
+		<typeAlias type="com.nd.cms.employee.model.vo.Emp_Skill" alias="Emp_Skill"/>
+		<typeAlias type="com.nd.cms.employee.model.vo.Search_Employee" alias="Search_Employee"/>
+	
+		<typeAlias type="com.nd.cms.common.Attachment" alias="Attachment"/>
+		
+		<typeAlias type="com.nd.cms.board.model.vo.Board" alias="Board"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mapper/employee-mapper.xml"/>
+		<mapper resource="mapper/board-mapper.xml"/>
+		<mapper resource="mapper/master-mapper.xml"/>
+	</mappers>
+
+</configuration>

@@ -1,0 +1,1444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Employee">
+	<resultMap type="Employee" id="EmployeeResultSet">
+		<id property="emp_no" column="EMP_NO" />
+		<result property="emp_id" column="EMP_ID" />
+		<result property="emp_pwd" column="EMP_PWD" />
+		<result property="emp_name" column="EMP_NAME" />
+		<result property="birth" column="BIRTH" />
+		<result property="gender" column="GENDER" />
+		<result property="phone" column="PHONE" />
+		<result property="email" column="EMAIL" />
+		<result property="address" column="ADDRESS" />
+		<result property="join_date" column="JOIN_DATE" />
+		<result property="withdraw_date" column="WITHDRAW_DATE" />
+		<result property="emp_status" column="EMP_STATUS" />
+		<result property="dept_code" column="DEPT_CODE" />
+		<result property="dept_name" column="DEPT_NAME" />
+		<result property="emp_level_code" column="EMP_LEVEL_CODE" />
+		<result property="emp_level_name" column="EMP_LEVEL_NAME" />
+
+		<result property="school_name" column="SCHOOL_NAME" />
+		<result property="major" column="MAJOR" />
+		<result property="grade" column="GRADE" />
+		<result property="total_career" column="TOTAL_CAREER" />
+		<result property="status" column="STATUS" />
+		<result property="skill_name" column="SKILL_NAME" />
+		<result property="keyword_name" column="KEYWORD_NAME" />
+		<result property="etc" column="ETC" />
+
+		<collection property="profileImg"
+			resultMap="AttachmentResultSet" />
+		<collection property="login"
+			resultMap="Login_HistoryYResultSet" />
+		<collection property="mody" resultMap="Emp_ModifyResultSet" />
+	</resultMap>
+
+	<resultMap type="Attachment" id="AttachmentResultSet">
+		<id property="file_no" column="FILE_NO" />
+		<result property="origin_name" column="ORIGIN_NAME" />
+		<result property="change_name" column="CHANGE_NAME" />
+		<result property="file_path" column="FILE_PATH" />
+		<result property="file_status" column="FILE_STATUS" />
+		<result property="upload_date" column="UPLOAD_DATE" />
+		<result property="board_no" column="BOARD_NO" />
+		<result property="emp_no" column="EMP_NO" />
+	</resultMap>
+
+	<resultMap type="Login_History" id="Login_HistoryYResultSet">
+		<id property="login_history_no" column="LOGIN_HISTORY_NO" />
+		<result property="emp_no" column="EMP_NO" />
+		<result property="login_date" column="LOGIN_DATE" />
+		<result property="login_ip" column="LOGIN_IP" />
+	</resultMap>
+
+	<resultMap type="Emp_Modify" id="Emp_ModifyResultSet">
+		<id property="emp_modify_no" column="EMP_MODIFY_NO" />
+		<result property="emp_no" column="EMP_NO" />
+		<result property="emp_modify_date" column="EMP_MODIFY_DATE" />
+	</resultMap>
+
+	<resultMap type="Career" id="CareerResultSet">
+		<id property="career_no" column="CAREER_NO" />
+		<result property="company_name" column="COMPANY_NAME" />
+		<result property="position" column="POSITION" />
+		<result property="hire_date" column="HIRE_DATE" />
+		<result property="resignation_date" column="RESIGNATION_DATE" />
+		<result property="emp_no" column="EMP_NO" />
+
+		<collection property="projectList"
+			resultMap="ProjectResultSet" />
+	</resultMap>
+
+	<resultMap type="Project" id="ProjectResultSet">
+		<id property="project_no" column="PROJECT_NO" />
+		<result property="career_num" column="CAREER_NUM" />
+		<result property="project_name" column="PROJECT_NAME" />
+		<result property="start_date" column="START_DATE" />
+		<result property="end_date" column="END_DATE" />
+		<result property="client" column="CLIENT" />
+		<result property="workplace" column="WORKPLACE" />
+		<result property="part" column="PART" />
+		<result property="os" column="OS" />
+		<result property="language" column="LANGUAGE" />
+		<result property="db" column="DB" />
+		<result property="tool" column="TOOL" />
+		<result property="was" column="WAS" />
+		<result property="etc" column="ETC" />
+	</resultMap>
+
+	<resultMap type="Search_Employee" id="Search_EmployeeResultSet">
+		<id property="emp_no" column="EMP_NO" />
+		<result property="emp_name" column="EMP_NAME" />
+		<result property="skill_type_name" column="SKILL_TYPE_NAME" />
+		<result property="grade" column="GRADE" />
+		<result property="skill" column="SKILL" />
+		<result property="address" column="ADDRESS" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+
+
+	<!-- 로그인 -->
+	<select id="selectEncPassword" resultType="String">
+		SELECT EMP_PWD
+		FROM employee
+		WHERE EMP_ID = 'ndcnc'
+		AND EMP_STATUS = 'Y'
+	</select>
+
+	<select id="signin" resultType="Employee">
+		SELECT EMP_NO
+			, EMP_ID
+			, EMP_LEVEL_CODE
+		FROM employee
+		WHERE EMP_ID = #{ emp_id }
+	</select>
+
+	<insert id="insertLoginHistory">
+		INSERT INTO login_history (
+			EMP_NO
+			, LOGIN_IP
+		)
+		VALUES(
+			#{ emp_no }
+			, #{ login_ip }
+		)
+	</insert>
+
+	<!-- 회원가입 -->
+	<select id="idCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM employee
+		WHERE EMP_ID = #{ emp_id }
+	</select>
+
+	<insert id="signup" parameterType="Employee">
+		<selectKey keyProperty="emp_no" order="AFTER" resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	
+		INSERT INTO employee (
+			EMP_ID
+			, EMP_PWD
+			, EMP_NAME
+			, BIRTH
+			, GENDER
+			, PHONE
+			, EMAIL
+			, DEPT_CODE
+			<if test="emp_level_code != 0">
+				, EMP_LEVEL_CODE
+			</if>
+		)
+		VALUES (
+			#{ emp_id }
+			, #{ emp_pwd }
+			, #{ emp_name }
+			, #{ birth }
+			, #{ gender }
+			, #{ phone }
+			, #{ email }
+			, #{ dept_code }
+			<if test="emp_level_code != 0">
+				, #{ emp_level_code }
+			</if>
+		)
+	</insert>
+
+	<select id="myInfoSearch" parameterType="int" resultMap="EmployeeResultSet">
+		SELECT E.EMP_NO
+			, E.EMP_NAME
+			, E.DEPT_CODE
+			, E.PHONE
+			, E.EMAIL
+			, E.ADDRESS
+			, M.EMP_MODIFY_DATE
+			, H.LOGIN_DATE
+			, H.LOGIN_IP
+			, A.FILE_NO
+			, A.ORIGIN_NAME
+			, A.CHANGE_NAME
+			, A.FILE_PATH
+		FROM (
+			SELECT EMP_NO
+				, EMP_NAME
+				, DEPT_CODE
+				, PHONE
+				, EMAIL
+				, ADDRESS
+			FROM employee
+			WHERE EMP_NO = #{ emp_no }
+		) E
+		LEFT JOIN (
+			SELECT EMP_NO
+				, IFNULL(DATE_FORMAT(EMP_MODIFY_DATE, '%Y-%m-%d'), '-') AS EMP_MODIFY_DATE
+			FROM emp_modify
+			WHERE EMP_NO = #{ emp_no }
+			ORDER BY EMP_MODIFY_NO DESC, EMP_MODIFY_DATE DESC
+			LIMIT 1
+		)M ON (E.EMP_NO = M.EMP_NO)
+		LEFT JOIN (
+			SELECT EMP_NO
+				, IFNULL(DATE_FORMAT(LOGIN_DATE, '%Y-%m-%d %h:%i:%s'), '-') AS LOGIN_DATE
+				, IFNULL(LOGIN_IP, '-') AS LOGIN_IP
+			FROM login_history
+			WHERE EMP_NO = #{ emp_no }
+			ORDER BY LOGIN_HISTORY_NO DESC, LOGIN_DATE DESC
+			LIMIT 1, 1
+		) H ON (E.EMP_NO = H.EMP_NO)
+		LEFT JOIN (
+			SELECT FILE_NO
+				, ORIGIN_NAME
+				, CHANGE_NAME
+				, FILE_PATH
+				, EMP_NO
+			FROM attachment
+			WHERE FILE_STATUS = 'Y'
+			AND EMP_NO = #{ emp_no }
+			AND BOARD_NO IS NULL
+		) A ON (E.EMP_NO = A.EMP_NO)
+	</select>
+
+	<update id="modyMyInfo" parameterType="Employee">
+		UPDATE employee SET
+		EMP_NAME = #{ emp_name }
+		, DEPT_CODE = #{ dept_code }
+		, PHONE = #{ phone }
+		, EMAIL = #{ email }
+		, ADDRESS = #{ address }
+		WHERE EMP_NO = #{ emp_no }
+		AND EMP_STATUS = 'Y'
+	</update>
+
+	<insert id="insertEmpMody" parameterType="int">
+		INSERT INTO emp_modify (
+			EMP_NO
+		)
+		VALUES (
+			#{ emp_no }
+		)
+	</insert>
+
+	<insert id="modyFile" parameterType="Attachment">
+		INSERT INTO attachment (
+			FILE_NO
+			, ORIGIN_NAME
+			, CHANGE_NAME
+			, FILE_PATH
+			, EMP_NO 
+		)
+		VALUES (
+			#{ file_no }
+			, #{ origin_name }
+			, #{ change_name }
+			, #{ file_path }
+			, #{ emp_no }
+		)
+		ON DUPLICATE KEY UPDATE
+		FILE_STATUS = 'N'
+	</insert>
+
+	<select id="selectSchoolList" parameterType="int"
+		resultType="School">
+		SELECT S.SCHOOL_NO
+			, S.SCHOOL_NAME
+			, S.MAJOR
+			, S.GRADUATE_STATUS_CODE
+			, S.DEGREE_CODE
+			, S.EMP_NO
+			, DATE_FORMAT(S.ADMISSION_DATE, '%Y.%m') AS ADMISSION_DATE
+			, DATE_FORMAT(S.GRADUATE_DATE, '%Y.%m') AS GRADUATE_DATE
+			, D.DEGREE_CODE
+			, D.DEGREE_NAME
+			, G.GRADUATE_STATUS_CODE
+			, G.GRADUATE_STATUS_NAME
+		FROM employee E
+		JOIN school S ON (E.EMP_NO = S.EMP_NO)
+		JOIN degree D ON (S.DEGREE_CODE = D.DEGREE_CODE)
+		JOIN graduate_status G ON (S.GRADUATE_STATUS_CODE = G.GRADUATE_STATUS_CODE)
+		WHERE E.EMP_NO = #{ emp_no }
+		AND S.SCHOOL_STATUS = 'Y'
+		ORDER BY S.GRADUATE_DATE, S.SCHOOL_NO
+	</select>
+
+	<insert id="schoolMody" parameterType="java.util.List">
+		INSERT INTO school (
+			SCHOOL_NO
+			, SCHOOL_NAME
+			, MAJOR
+			, ADMISSION_DATE
+			, GRADUATE_DATE
+			, GRADUATE_STATUS_CODE
+			, DEGREE_CODE
+			, EMP_NO
+		)
+		VALUES
+		<foreach collection="list" item="s" separator=",">
+			(
+				#{ s.school_no }
+				, #{ s.school_name }
+				, #{ s.major }
+				, #{ s.admission_date }
+				, #{ s.graduate_date }
+				, #{ s.graduate_status_code }
+				, #{ s.degree_code }
+				, #{ s.emp_no }
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		SCHOOL_NAME = VALUES(SCHOOL_NAME)
+		, MAJOR = VALUES(MAJOR)
+		, ADMISSION_DATE = VALUES(ADMISSION_DATE)
+		, GRADUATE_DATE = VALUES(GRADUATE_DATE)
+		, GRADUATE_STATUS_CODE = VALUES(GRADUATE_STATUS_CODE)
+		, DEGREE_CODE = VALUES(DEGREE_CODE)
+	</insert>
+
+	<update id="deleteSchool" parameterType="int">
+		UPDATE school SET
+		SCHOOL_STATUS = 'N'
+		WHERE SCHOOL_NO = #{ school_no }
+	</update>
+
+	<select id="selectMilitary" resultType="Military">
+		SELECT M.MILITARY_NO
+			, M.MILITARY_SERVICE_CODE
+			, S.MILITARY_SERVICE_NAME
+			, M.ENROLL_DATE
+			, M.DISCHARGE_DATE
+			, M.MILITARY_GROUP_CODE
+			, G.MILITARY_GROUP_NAME
+			, M.MILITARY_RANK_CODE
+			, R.MILITARY_RANK_NAME
+			, M.DISCHARGE_CODE
+			, D.DISCHARGE_NAME
+			, M.EMP_NO
+		FROM military M
+		LEFT JOIN military_group G ON (M.MILITARY_GROUP_CODE = G.MILITARY_GROUP_CODE)
+		LEFT JOIN military_rank R ON (M.MILITARY_RANK_CODE = R.MILITARY_RANK_CODE)
+		LEFT JOIN military_service S ON (M.MILITARY_SERVICE_CODE = S.MILITARY_SERVICE_CODE)
+		LEFT JOIN discharge D ON (M.DISCHARGE_CODE = D.DISCHARGE_CODE)
+		WHERE EMP_NO = #{ emp_no }
+	</select>
+
+	<insert id="militaryMody" parameterType="Military">
+		INSERT INTO military (
+			MILITARY_SERVICE_CODE
+			, EMP_NO
+			, ENROLL_DATE
+			, DISCHARGE_DATE
+			, MILITARY_GROUP_CODE
+			, MILITARY_RANK_CODE
+			, DISCHARGE_CODE
+		)
+		VALUES (
+		<if test="military_service_code == 1">
+			#{ military_service_code }
+			, #{ emp_no }
+			, #{ enroll_date }
+			, #{ discharge_date }
+			, #{ military_group_code }
+			, #{ military_rank_code }
+			, #{ discharge_code }
+		</if>
+		<if test="military_service_code != 1">
+			#{ military_service_code }
+			, #{ emp_no }
+			, NULL
+			, NULL
+			, NULL
+			, NULL
+			, NULL
+		</if>
+		)
+		ON DUPLICATE KEY UPDATE
+		<if test="military_service_code == 1">
+			MILITARY_SERVICE_CODE = #{ military_service_code }
+			, ENROLL_DATE = #{ enroll_date }
+			, DISCHARGE_DATE = #{ discharge_date }
+			, MILITARY_GROUP_CODE = #{ military_group_code }
+			, MILITARY_RANK_CODE = #{ military_rank_code }
+			, DISCHARGE_CODE = #{ discharge_code }
+		</if>
+		<if test="military_service_code != 1">
+			MILITARY_SERVICE_CODE = #{ military_service_code }
+			, ENROLL_DATE = NULL
+			, DISCHARGE_DATE = NULL
+			, MILITARY_GROUP_CODE = NULL
+			, MILITARY_RANK_CODE = NULL
+			, DISCHARGE_CODE = NULL
+		</if>
+	</insert>
+
+	<select id="selectEdu" resultType="Education">
+		SELECT E.EDU_NO
+			, E.EDU_NAME
+			, E.EDU_INSTITUTE_NAME
+			, E.EDU_START_DATE
+			, E.EDU_END_DATE
+			, E.EDU_STATUS_CODE
+			, S.EDU_STATUS_NAME
+			, E.EMP_NO
+		FROM education E
+		JOIN education_status S ON (E.EDU_STATUS_CODE = S.EDU_STATUS_CODE)
+		WHERE EMP_NO = #{ emp_no }
+		AND EDU_STATUS = 'Y'
+		ORDER BY EDU_NO, EDU_START_DATE
+	</select>
+
+	<insert id="eduMody" parameterType="java.util.List">
+		INSERT INTO education (
+			EDU_NO
+			, EDU_NAME
+			, EDU_INSTITUTE_NAME
+			, EDU_START_DATE
+			, EDU_END_DATE
+			, EDU_STATUS_CODE
+			, EMP_NO
+		)
+		VALUES
+		<foreach collection="list" item="e" separator=",">
+			(
+				#{ e.edu_no }
+				, #{ e.edu_name }
+				, #{ e.edu_institute_name }
+				, #{ e.edu_start_date }
+				, #{ e.edu_end_date }
+				, #{ e.edu_status_code }
+				, #{ e.emp_no }
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		EDU_NAME = VALUES(EDU_NAME)
+		, EDU_INSTITUTE_NAME = VALUES(EDU_INSTITUTE_NAME)
+		, EDU_START_DATE = VALUES(EDU_START_DATE)
+		, EDU_END_DATE = VALUES(EDU_END_DATE)
+		, EDU_STATUS_CODE = VALUES(EDU_STATUS_CODE)
+	</insert>
+
+	<update id="deleteEdu">
+		UPDATE education
+		SET EDU_STATUS = 'N'
+		WHERE EDU_NO = #{ edu_no }
+	</update>
+
+	<select id="selectLicense" resultType="License">
+		SELECT L.LICENSE_NO
+			, L.LICENSE_LIST_CODE
+			, LL.LICENSE_LIST_NAME
+			, L.ACQUISITION_DATE
+			, L.EMP_NO
+		FROM license L
+		JOIN license_list LL ON (L.LICENSE_LIST_CODE = LL.LICENSE_LIST_CODE)
+		WHERE EMP_NO = #{ emp_no }
+		AND LICENSE_STATUS = 'Y'
+	</select>
+
+	<update id="deleteSkill" parameterType="java.util.Map">
+		UPDATE emp_skill
+		SET EMP_SKILL_STATUS = 'N'
+		WHERE EMP_NO = #{ emp_no }
+		<if test="skillList != null">
+			AND KEYWORD_CODE = 0
+			AND SKILL_CODE != 0
+			AND SKILL_CODE NOT IN
+			<foreach collection="skillList" item="s" separator="," open="(" close=")">
+				#{ s.skill_code }
+			</foreach>
+		</if>
+		<if test="keywordlList != null">
+			AND SKILL_CODE = 0
+			AND KEYWORD_CODE != 0
+			AND KEYWORD_CODE NOT IN
+			<foreach collection="keywordList" item="s" separator="," open="(" close=")">
+				#{ s.keyword_code }
+			</foreach>
+		</if>
+		<if test="etc != null">
+			AND SKILL_CODE = 0
+			AND KEYWORD_CODE = 0
+		</if>
+	</update>
+
+	<insert id="skillMody" parameterType="java.util.List">
+		INSERT INTO emp_skill (
+			SKILL_CODE
+			, KEYWORD_CODE
+			, ETC
+			, EMP_NO
+		)
+		VALUES
+		<foreach collection="list" item="s" separator=",">
+			(
+				#{ s.skill_code, jdbcType=INTEGER }
+				, #{ s.keyword_code, jdbcType=INTEGER }
+				, #{ s.etc, jdbcType=VARCHAR }
+				, #{ s.emp_no }
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		EMP_SKILL_STATUS = 'Y'
+		, ETC = VALUES(ETC)
+	</insert>
+
+	<select id="selectSkill" resultType="Emp_Skill">
+		SELECT EMP_SKILL_NO
+			, SKILL_CODE
+			, KEYWORD_CODE
+			, ETC
+			, EMP_NO
+		FROM emp_skill
+		WHERE EMP_NO = #{ emp_no }
+		AND EMP_SKILL_STATUS = 'Y'
+	</select>
+
+	<update id="deleteLicense">
+		UPDATE license
+		SET LICENSE_STATUS = 'N'
+		WHERE EMP_NO = #{ emp_no }
+		<if test="licenseList != null">
+			AND LICENSE_LIST_CODE NOT IN
+			<foreach collection="licenseList" item="l" separator="," open="(" close=")">
+				#{ l.license_list_code }
+			</foreach>
+		</if>
+	</update>
+
+	<insert id="licenseMody" parameterType="java.util.List">
+		INSERT INTO license (
+			LICENSE_LIST_CODE
+			, ACQUISITION_DATE
+			, EMP_NO
+		)
+		VALUES
+		<foreach collection="list" item="l" separator=",">
+			(
+				#{ l.license_list_code }
+				, #{ l.acquisition_date, jdbcType=VARCHAR }
+				, #{ l.emp_no }
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		LICENSE_STATUS = 'Y'
+		, ACQUISITION_DATE = VALUES(ACQUISITION_DATE)
+	</insert>
+
+	<select id="selectCareer" resultMap="CareerResultSet">
+		SELECT C.CAREER_NO
+				, C.COMPANY_NAME
+				, C.POSITION
+				, C.HIRE_DATE
+				, C.RESIGNATION_DATE
+				, C.EMP_NO
+				, P.PROJECT_NO
+				, P.CAREER_NUM
+				, P.PROJECT_NAME
+				, P.START_DATE
+				, P.END_DATE
+				, P.CLIENT
+				, P.WORKPLACE
+				, P.PART
+				, P.OS
+				, P.LANGUAGE
+				, P.DB
+				, P.TOOL
+				, P.WAS
+				, P.ETC
+		FROM (
+			SELECT CAREER_NO
+				, COMPANY_NAME
+				, POSITION
+				, HIRE_DATE
+				, RESIGNATION_DATE
+				, EMP_NO
+			FROM career
+			WHERE CAREER_STATUS = 'Y'
+			AND EMP_NO = #{ emp_no }
+			ORDER BY CAREER_NO, HIRE_DATE
+		) C
+		LEFT JOIN (
+			SELECT PROJECT_NO
+				, CAREER_NUM
+				, PROJECT_NAME
+				, START_DATE
+				, END_DATE
+				, CLIENT
+				, WORKPLACE
+				, PART
+				, OS
+				, LANGUAGE
+				, DB
+				, TOOL
+				, WAS
+				, ETC
+			FROM project
+			WHERE PROJECT_STATUS = 'Y'
+			ORDER BY PROJECT_NO, START_DATE
+		) P ON (C.CAREER_NO = P.CAREER_NUM)
+	</select>
+
+	<update id="deleteProject">
+		UPDATE project
+		SET PROJECT_STATUS = 'N'
+		WHERE PROJECT_NO = #{ project_no }
+	</update>
+
+	<update id="deleteCareer">
+		UPDATE career
+		SET CAREER_STATUS = 'N'
+		WHERE CAREER_NO = #{ career_no }
+	</update>
+
+	<insert id="careerMody" useGeneratedKeys="true" keyProperty="career_no">
+		<selectKey keyProperty="career_no" order="AFTER" resultType="int">
+			<choose>
+				<when test="career_no gt 0">
+					SELECT CAREER_NO
+					FROM career
+					WHERE CAREER_NO = #{ career_no }
+				</when>
+				<otherwise>
+					SELECT LAST_INSERT_ID()
+				</otherwise>
+			</choose>
+		</selectKey>
+		INSERT INTO career (
+			CAREER_NO
+			, COMPANY_NAME
+			, POSITION
+			, HIRE_DATE
+			, RESIGNATION_DATE
+			, EMP_NO
+		)
+		VALUES (
+			#{ career_no }
+			, #{ company_name }
+			, #{ position }
+			, #{ hire_date }
+			, #{ resignation_date, jdbcType=DATE }
+			, #{ emp_no }
+		)
+		ON DUPLICATE KEY UPDATE
+		COMPANY_NAME = VALUES(COMPANY_NAME)
+		, POSITION = VALUES(POSITION)
+		, HIRE_DATE = VALUES(HIRE_DATE)
+		, RESIGNATION_DATE = VALUES(RESIGNATION_DATE)
+	</insert>
+
+	<insert id="projectMody">
+		INSERT INTO project (
+			PROJECT_NO
+			, CAREER_NUM
+			, PROJECT_NAME
+			, START_DATE
+			, END_DATE
+			, CLIENT
+			, WORKPLACE
+			, PART
+			, OS
+			, LANGUAGE
+			, DB
+			, TOOL
+			, WAS
+			, ETC
+		)
+		VALUES
+		<foreach collection="list" item="p" separator=",">
+			(
+				#{ p.project_no }
+				, #{ p.career_num }
+				, #{ p.project_name }
+				, #{ p.start_date, jdbcType=DATE }
+				, #{ p.end_date, jdbcType=DATE }
+				, #{ p.client, jdbcType=VARCHAR }
+				, #{ p.workplace, jdbcType=VARCHAR }
+				, #{ p.part, jdbcType=VARCHAR }
+				, #{ p.os, jdbcType=VARCHAR }
+				, #{ p.language, jdbcType=VARCHAR }
+				, #{ p.db, jdbcType=VARCHAR }
+				, #{ p.tool, jdbcType=VARCHAR }
+				, #{ p.was, jdbcType=VARCHAR }
+				, #{ p.etc, jdbcType=VARCHAR }
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		PROJECT_NAME = VALUES(PROJECT_NAME)
+		, START_DATE = VALUES(START_DATE)
+		, END_DATE = VALUES(END_DATE)
+		, CLIENT = VALUES(CLIENT)
+		, WORKPLACE = VALUES(WORKPLACE)
+		, PART = VALUES(PART)
+		, OS = VALUES(OS)
+		,
+		LANGUAGE = VALUES(LANGUAGE)
+		, DB = VALUES(DB)
+		, TOOL = VALUES(TOOL)
+		, WAS = VALUES(WAS)
+		, ETC = VALUES(ETC)
+	</insert>
+
+	<select id="getAdminSearchCount" parameterType="Search_Employee"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM (
+			SELECT DISTINCT EMP_NO
+				, EMP_NAME
+				, SKILL_TYPE_NAME
+				, GRADE
+				, SKILL
+				, ADDRESS
+				, STATUS
+			FROM (
+				SELECT E.EMP_NO
+					, E.GENDER
+					, E.EMP_LEVEL_CODE
+					, D.DEPT_CODE
+					, ST.SKILL_TYPE_CODE
+					, LICENSE_LIST_CODE
+					, CONCAT(E.EMP_NAME, ' (', IF(E.GENDER = 'M', '남', '여'), ', ', FLOOR((REPLACE(CURRENT_DATE, '-', '') - REPLACE(E.BIRTH, '-', '')) / 10000), ')') AS EMP_NAME
+					, IFNULL(ST2.SKILL_TYPE_NAME, '미등록') AS SKILL_TYPE_NAME
+					, IFNULL(GRADE, '미등록') AS GRADE, IFNULL(SK2.SKILL, '미등록') AS SKILL
+					, IFNULL(SUBSTR(E.ADDRESS, 1, 2), '미등록') AS ADDRESS
+					, IFNULL(STATUS, '대기중') AS STATUS
+					, SKILL_CODE
+					, KEYWORD_CODE
+					, ETC
+				FROM employee E
+				JOIN department D ON (E.DEPT_CODE = D.DEPT_CODE)
+			
+				LEFT JOIN (
+					SELECT EMP_NO
+						, CASE WHEN LONGEVITY <![CDATA[ < ]]> 6 THEN '초급'
+						WHEN LONGEVITY <![CDATA[ < ]]> 8 THEN '중급'
+						WHEN LONGEVITY <![CDATA[ < ]]> 11 THEN '고급'
+						WHEN LONGEVITY <![CDATA[ >= ]]> 11 THEN '특급'
+						END AS GRADE
+					FROM (
+						SELECT EMP_NO
+							, FLOOR((REPLACE(CURRENT_DATE, '-', '') - REPLACE(GRADUATE_DATE, '-', '')) / 10000 ) AS LONGEVITY
+						FROM (
+							SELECT EMP_NO
+								, GRADUATE_DATE
+							FROM school
+							WHERE DEGREE_CODE <![CDATA[ >= ]]> 3
+							ORDER BY GRADUATE_DATE DESC
+						) G
+					) G
+				) G ON (E.EMP_NO = G.EMP_NO)
+			
+				LEFT JOIN (
+					SELECT STS.EMP_NO,
+						CASE WHEN STS.START_DATE <![CDATA[ <= ]]> CURRENT_DATE AND (STS.END_DATE <![CDATA[ >= ]]> DATE_ADD(CURRENT_DATE, INTERVAL 1 MONTH) OR STS.END_DATE IS NULL) THEN '진행중'
+						WHEN STS.START_DATE <![CDATA[ <= ]]> CURRENT_DATE AND STS.END_DATE <![CDATA[ >= ]]> CURRENT_DATE AND STS.END_DATE <![CDATA[ < ]]> DATE_ADD(CURRENT_DATE, INTERVAL 1 MONTH) THEN '종료임박'
+						ELSE '대기중' END AS STATUS
+					FROM (
+						SELECT C.EMP_NO, MAX.START_DATE, P.END_DATE
+						FROM career C
+						JOIN project P ON (C.CAREER_NO = P.CAREER_NUM)
+						JOIN (
+							SELECT EMP_NO, MAX(START_DATE) AS START_DATE
+							FROM career C
+							JOIN project P ON (C.CAREER_NO = P.CAREER_NUM)
+							WHERE PROJECT_STATUS = 'Y'
+							GROUP BY EMP_NO
+						) MAX ON (MAX.START_DATE = P.START_DATE)
+					) STS
+				) STS ON (E.EMP_NO = STS.EMP_NO)
+			    
+			    LEFT JOIN (
+					SELECT DISTINCT E.EMP_NO
+						, ST.SKILL_TYPE_CODE
+			        FROM employee E
+			        JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+			        JOIN skill S ON (ES.SKILL_CODE = S.SKILL_CODE)
+			        JOIN skill_type ST ON (S.SKILL_TYPE_CODE = ST.SKILL_TYPE_CODE)
+			        AND ST.SKILL_TYPE_CODE != 0
+			    ) ST ON (E.EMP_NO = ST.EMP_NO)
+			    
+			    LEFT JOIN (
+					SELECT DISTINCT E.EMP_NO
+						, L.LICENSE_LIST_CODE
+					FROM employee E
+					LEFT JOIN license L ON (E.EMP_NO = L.EMP_NO)
+					JOIN license_list LL ON (L.LICENSE_LIST_CODE = LL.LICENSE_LIST_CODE)
+					WHERE L.LICENSE_STATUS = 'Y'
+				) L ON (L.EMP_NO = E.EMP_NO)
+			    
+			    LEFT JOIN (
+					SELECT DISTINCT
+						E.EMP_NO
+						, IFNULL(REPLACE(GROUP_CONCAT(DISTINCT ST.SKILL_TYPE_NAME ORDER BY ST.SKILL_TYPE_CODE SEPARATOR ', '), '없음, ', ''), '없음') AS SKILL_TYPE_NAME
+			        FROM employee E
+			        JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+			        JOIN skill S ON (ES.SKILL_CODE = S.SKILL_CODE)
+			        JOIN skill_type ST ON (S.SKILL_TYPE_CODE = ST.SKILL_TYPE_CODE)
+			        WHERE S.SKILL_TYPE_CODE != 0
+			        GROUP BY E.EMP_NO
+			    ) ST2 ON (E.EMP_NO = ST2.EMP_NO)
+			    
+			    LEFT JOIN (
+					SELECT E.EMP_NO
+						, ES.SKILL_CODE
+						, ES.KEYWORD_CODE
+						, ES.ETC
+			        FROM employee E
+			        JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+			    ) SK ON (E.EMP_NO = SK.EMP_NO)
+			    
+			    LEFT JOIN (
+					SELECT E.EMP_NO
+						, IFNULL(CONCAT(SKILL_NAME, ', ', KEYWORD_NAME, IFNULL(CONCAT(', ', ETC), '')), '미등록') AS SKILL
+					FROM employee E
+					LEFT JOIN (
+						SELECT SK.EMP_NO
+							, REPLACE(GROUP_CONCAT(DISTINCT SK.SKILL_NAME ORDER BY SK.SKILL_CODE SEPARATOR ', '), '없음, ', '') AS SKILL_NAME
+						FROM (
+							SELECT E.EMP_NO, S.SKILL_CODE, S.SKILL_NAME
+							FROM employee E
+							JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+							JOIN skill S ON (ES.SKILL_CODE = S.SKILL_CODE)
+							WHERE ES.EMP_SKILL_STATUS = 'Y'
+							AND S.SKILL_CODE != 0
+						) SK
+						GROUP BY SK.EMP_NO
+					) SK ON (E.EMP_NO = SK.EMP_NO)
+					
+					LEFT JOIN (
+						SELECT K.EMP_NO
+							, REPLACE(GROUP_CONCAT(DISTINCT K.KEYWORD_NAME ORDER BY K.KEYWORD_CODE SEPARATOR ', '), '없음, ', '') AS KEYWORD_NAME
+						FROM (
+							SELECT E.EMP_NO
+								, K.KEYWORD_CODE
+								, K.KEYWORD_NAME
+							FROM employee E
+							JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+							JOIN keyword K ON (ES.KEYWORD_CODE = K.KEYWORD_CODE)
+							WHERE ES.EMP_SKILL_STATUS = 'Y'
+							AND K.KEYWORD_CODE != 0
+						) K
+						GROUP BY K.EMP_NO
+					) K ON (E.EMP_NO = K.EMP_NO)
+					
+					LEFT JOIN (
+						SELECT E.EMP_NO
+							, ES.ETC
+						FROM employee E
+						JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+						WHERE ES.EMP_SKILL_STATUS = 'Y'
+						AND ES.SKILL_CODE = 0
+						AND ES.KEYWORD_CODE = 0
+					) ET ON (E.EMP_NO = ET.EMP_NO)
+			    ) SK2 ON (E.EMP_NO = SK2.EMP_NO)
+			) E
+			
+			WHERE E.EMP_LEVEL_CODE BETWEEN 2 AND 3
+			<if test="emp_name != null and emp_name != ''">
+				AND EMP_NAME LIKE CONCAT('%', #{ emp_name }, '%')
+			</if>
+			<if test="gender != null and gender != ''">
+				AND GENDER = #{ gender }
+			</if>
+			<if test="gradeList.size != 0">
+				AND GRADE IN
+				<foreach collection="gradeList" item="g" open="(" close=")" separator=",">
+					#{ g }
+				</foreach>
+			</if>
+			<if test="stateList.size != 0">
+				AND STATUS IN
+				<foreach collection="stateList" item="s" open="(" close=")" separator=",">
+					#{ s }
+				</foreach>
+			</if>
+			<if test="dept_codeList.size != 0">
+				AND DEPT_CODE IN
+				<foreach collection="dept_codeList" item="d" open="(" close=")" separator=",">
+					#{ d }
+				</foreach>
+			</if>
+			<if test="skill_typeList.size != 0">
+				AND SKILL_TYPE_CODE IN
+				<foreach collection="skill_typeList" item="t" open="(" close=")" separator=",">
+					#{ t }
+				</foreach>
+			</if>
+			<if test="licenseList.size != 0">
+				AND LICENSE_LIST_CODE IN
+				<foreach collection="licenseList" item="l" open="(" close=")" separator=",">
+					#{ l }
+				</foreach>
+			</if>
+			<if test="skill_codeList.size != 0 or keyword_codeList.size != 0 or etc_list.size != 0">
+				AND (
+					<trim prefix=" " prefixOverrides="OR">
+						<if test="skill_codeList.size != 0">
+							OR SKILL_CODE IN
+							<foreach collection="skill_codeList" item="s" open="(" close=")" separator=",">
+								#{ s }
+							</foreach>
+						</if>
+						<if test="keyword_codeList.size != 0">
+							OR KEYWORD_CODE IN
+							<foreach collection="keyword_codeList" item="k" open="(" close=")" separator=",">
+								#{ k }
+							</foreach>
+						</if>
+						<if test="etc_list.size != 0">
+							OR ETC REGEXP
+							<foreach collection="etc_list" item="e" open="CONCAT(" close=")" separator=", '|'">
+								#{ e }
+							</foreach>
+						</if>
+					</trim>
+				)
+			</if>
+		) E
+	</select>
+		
+	<select id="adminSearch" parameterType="Search_Employee" resultMap="Search_EmployeeResultSet">
+		SELECT DISTINCT EMP_NO
+			, EMP_NAME
+			, SKILL_TYPE_NAME
+			, GRADE
+			, SKILL
+			, ADDRESS
+			, STATUS
+		FROM (
+			SELECT E.EMP_NO
+				, E.GENDER
+				, E.EMP_LEVEL_CODE
+				, D.DEPT_CODE
+				, ST.SKILL_TYPE_CODE
+				, LICENSE_LIST_CODE
+				, CONCAT(E.EMP_NAME, ' (', IF(E.GENDER = 'M', '남', '여'), ', ', FLOOR((REPLACE(CURRENT_DATE, '-', '') - REPLACE(E.BIRTH, '-', '')) / 10000), ')') AS EMP_NAME
+				, IFNULL(ST2.SKILL_TYPE_NAME, '미등록') AS SKILL_TYPE_NAME
+				, IFNULL(GRADE, '미등록') AS GRADE
+				, IFNULL(SK2.SKILL, '미등록') AS SKILL
+				, IFNULL(SUBSTR(E.ADDRESS, 1, 2), '미등록') AS ADDRESS, IFNULL(STATUS, '대기중') AS STATUS
+				, SKILL_CODE
+				, KEYWORD_CODE
+				, ETC
+			FROM employee E
+			JOIN department D ON (E.DEPT_CODE = D.DEPT_CODE)
+		
+			LEFT JOIN (
+				SELECT EMP_NO
+					, CASE WHEN LONGEVITY <![CDATA[ < ]]> 6 THEN '초급'
+					WHEN LONGEVITY <![CDATA[ < ]]> 8 THEN '중급'
+					WHEN LONGEVITY <![CDATA[ < ]]> 11 THEN '고급'
+					WHEN LONGEVITY <![CDATA[ >= ]]> 11 THEN '특급'
+					END AS GRADE
+				FROM (
+					SELECT EMP_NO
+						, FLOOR((REPLACE(CURRENT_DATE, '-', '') - REPLACE(GRADUATE_DATE, '-', '')) / 10000 ) AS LONGEVITY
+					FROM (
+						SELECT EMP_NO
+							, GRADUATE_DATE
+						FROM school
+						WHERE DEGREE_CODE <![CDATA[ >= ]]> 3
+						ORDER BY GRADUATE_DATE DESC
+					) G
+				) G
+			) G ON (E.EMP_NO = G.EMP_NO)
+		
+			LEFT JOIN (
+				SELECT STS.EMP_NO,
+					CASE WHEN STS.START_DATE <![CDATA[ <= ]]> CURRENT_DATE AND (STS.END_DATE <![CDATA[ >= ]]> DATE_ADD(CURRENT_DATE, INTERVAL 1 MONTH) OR STS.END_DATE IS NULL) THEN '진행중'
+					WHEN STS.START_DATE <![CDATA[ <= ]]> CURRENT_DATE AND STS.END_DATE <![CDATA[ >= ]]> CURRENT_DATE AND STS.END_DATE <![CDATA[ < ]]> DATE_ADD(CURRENT_DATE, INTERVAL 1 MONTH) THEN '종료임박'
+					ELSE '대기중' END AS STATUS
+				FROM (
+					SELECT C.EMP_NO, MAX.START_DATE, P.END_DATE
+					FROM career C
+					JOIN project P ON (C.CAREER_NO = P.CAREER_NUM)
+					JOIN (
+						SELECT EMP_NO, MAX(START_DATE) AS START_DATE
+						FROM career C
+						JOIN project P ON (C.CAREER_NO = P.CAREER_NUM)
+						WHERE PROJECT_STATUS = 'Y'
+						GROUP BY EMP_NO
+					) MAX ON (MAX.START_DATE = P.START_DATE)
+				) STS
+			) STS ON (E.EMP_NO = STS.EMP_NO)
+		    
+		    LEFT JOIN (
+				SELECT DISTINCT E.EMP_NO
+					, ST.SKILL_TYPE_CODE
+		        FROM employee E
+		        JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+		        JOIN skill S ON (ES.SKILL_CODE = S.SKILL_CODE)
+		        JOIN skill_type ST ON (S.SKILL_TYPE_CODE = ST.SKILL_TYPE_CODE)
+		        AND ST.SKILL_TYPE_CODE != 0
+		    ) ST ON (E.EMP_NO = ST.EMP_NO)
+		    
+		    LEFT JOIN (
+				SELECT DISTINCT E.EMP_NO
+					, L.LICENSE_LIST_CODE
+				FROM employee E
+				LEFT JOIN license L ON (E.EMP_NO = L.EMP_NO)
+				JOIN license_list LL ON (L.LICENSE_LIST_CODE = LL.LICENSE_LIST_CODE)
+				WHERE L.LICENSE_STATUS = 'Y'
+			) L ON (L.EMP_NO = E.EMP_NO)
+		    
+		    LEFT JOIN (
+				SELECT DISTINCT E.EMP_NO
+					, IFNULL(REPLACE(GROUP_CONCAT(DISTINCT ST.SKILL_TYPE_NAME ORDER BY ST.SKILL_TYPE_CODE SEPARATOR ', '), '없음, ', ''), '없음') AS SKILL_TYPE_NAME
+		        FROM employee E
+		        JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+		        JOIN skill S ON (ES.SKILL_CODE = S.SKILL_CODE)
+		        JOIN skill_type ST ON (S.SKILL_TYPE_CODE = ST.SKILL_TYPE_CODE)
+		        WHERE S.SKILL_TYPE_CODE != 0
+		        GROUP BY E.EMP_NO
+		    ) ST2 ON (E.EMP_NO = ST2.EMP_NO)
+		    
+		    LEFT JOIN (
+				SELECT E.EMP_NO
+					, ES.SKILL_CODE
+					, ES.KEYWORD_CODE
+					, ES.ETC
+		        FROM employee E
+		        JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+		    ) SK ON (E.EMP_NO = SK.EMP_NO)
+		    
+		    LEFT JOIN (
+				SELECT E.EMP_NO
+					, IFNULL(CONCAT(SKILL_NAME, ', ', KEYWORD_NAME, IFNULL(CONCAT(', ', ETC), '')), '미등록') AS SKILL
+				FROM employee E
+				LEFT JOIN (
+					SELECT SK.EMP_NO
+						, REPLACE(GROUP_CONCAT(DISTINCT SK.SKILL_NAME ORDER BY SK.SKILL_CODE SEPARATOR ', '), '없음, ', '') AS SKILL_NAME
+					FROM (
+						SELECT E.EMP_NO
+							, S.SKILL_CODE
+							, S.SKILL_NAME
+						FROM employee E
+						JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+						JOIN skill S ON (ES.SKILL_CODE = S.SKILL_CODE)
+						WHERE ES.EMP_SKILL_STATUS = 'Y'
+						AND S.SKILL_CODE != 0
+					) SK
+					GROUP BY SK.EMP_NO
+				) SK ON (E.EMP_NO = SK.EMP_NO)
+				
+				LEFT JOIN (
+					SELECT K.EMP_NO
+						, REPLACE(GROUP_CONCAT(DISTINCT K.KEYWORD_NAME ORDER BY K.KEYWORD_CODE SEPARATOR ', '), '없음, ', '') AS KEYWORD_NAME
+					FROM (
+						SELECT E.EMP_NO
+							, K.KEYWORD_CODE
+							, K.KEYWORD_NAME
+						FROM employee E
+						JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+						JOIN keyword K ON (ES.KEYWORD_CODE = K.KEYWORD_CODE)
+						WHERE ES.EMP_SKILL_STATUS = 'Y'
+						AND K.KEYWORD_CODE != 0
+					) K
+					GROUP BY K.EMP_NO
+				) K ON (E.EMP_NO = K.EMP_NO)
+				
+				LEFT JOIN (
+					SELECT E.EMP_NO
+						, ES.ETC
+					FROM employee E
+					JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+					WHERE ES.EMP_SKILL_STATUS = 'Y'
+					AND ES.SKILL_CODE = 0
+					AND ES.KEYWORD_CODE = 0
+			
+				) ET ON (E.EMP_NO = ET.EMP_NO)
+		    ) SK2 ON (E.EMP_NO = SK2.EMP_NO)
+		) E
+		
+		WHERE E.EMP_LEVEL_CODE BETWEEN 2 AND 3
+		<if test="search.emp_name != null and search.emp_name != ''">
+			AND EMP_NAME LIKE CONCAT('%', #{ search.emp_name }, '%')
+		</if>
+		<if test="search.gender != null and search.gender != ''">
+			AND GENDER = #{ search.gender }
+		</if>
+		<if test="search.gradeList.size != 0">
+			AND GRADE IN
+			<foreach collection="search.gradeList" item="g" open="(" close=")" separator=",">
+				#{ g }
+			</foreach>
+		</if>
+		<if test="search.stateList.size != 0">
+			AND STATUS IN
+			<foreach collection="search.stateList" item="s" open="(" close=")" separator=",">
+				#{ s }
+			</foreach>
+		</if>
+		<if test="search.dept_codeList.size != 0">
+			AND DEPT_CODE IN
+			<foreach collection="search.dept_codeList" item="d" open="(" close=")" separator=",">
+				#{ d }
+			</foreach>
+		</if>
+		<if test="search.skill_typeList.size != 0">
+			AND SKILL_TYPE_CODE IN
+			<foreach collection="search.skill_typeList" item="t" open="(" close=")" separator=",">
+				#{ t }
+			</foreach>
+		</if>
+		<if test="search.licenseList.size != 0">
+			AND LICENSE_LIST_CODE IN
+			<foreach collection="search.licenseList" item="l" open="(" close=")" separator=",">
+				#{ l }
+			</foreach>
+		</if>
+		<if test="search.skill_codeList.size != 0 or search.keyword_codeList.size != 0 or search.etc_list.size != 0">
+			AND (
+				<trim prefix=" " prefixOverrides="OR">
+					<if test="search.skill_codeList.size != 0">
+						OR SKILL_CODE IN
+						<foreach collection="search.skill_codeList" item="s" open="(" close=")" separator=",">
+							#{ s }
+						</foreach>
+					</if>
+					<if test="search.keyword_codeList.size != 0">
+						OR KEYWORD_CODE IN
+						<foreach collection="search.keyword_codeList" item="k" open="(" close=")" separator=",">
+							#{ k }
+						</foreach>
+					</if>
+					<if test="search.etc_list.size != 0">
+						OR ETC REGEXP
+						<foreach collection="search.etc_list" item="e" open="CONCAT(" close=")" separator=", '|'">
+							#{ e }
+						</foreach>
+					</if>
+				</trim>
+			)
+		</if>
+		ORDER BY E.EMP_NO
+		LIMIT #{ pi.limitStart }, #{ pi.limit }
+	</select>
+
+	<select id="selectDetailEmp" resultMap="EmployeeResultSet">
+		SELECT E.EMP_NO
+			, E.EMP_NAME
+			, E.PHONE
+			, E.EMAIL
+			, ADDRESS
+			, DEPT_NAME
+			, IFNULL(SCHOOL_NAME, '미등록') AS SCHOOL_NAME
+			, IFNULL(MAJOR, '미등록') AS MAJOR
+			, IFNULL(GRADE, '미등록') AS GRADE
+			, IFNULL(TOTAL_CAREER, '미등록') AS TOTAL_CAREER
+			, IFNULL(STATUS, '대기중') AS STATUS
+			, IFNULL(SKILL_NAME, '미등록') AS SKILL_NAME
+			, IFNULL(KEYWORD_NAME, '미등록') AS KEYWORD_NAME
+			, IFNULL(ETC, '미등록') AS ETC
+			, A.FILE_NO
+			, A.ORIGIN_NAME
+			, A.CHANGE_NAME
+			, A.FILE_PATH
+		FROM (
+			SELECT E.EMP_NO
+				, E.PHONE
+				, E.EMAIL
+				, E.GENDER
+				, D.DEPT_CODE
+				, D.DEPT_NAME
+				, IFNULL(E.ADDRESS, '미등록') AS ADDRESS
+				, CONCAT(E.EMP_NAME, ' (', IF(E.GENDER = 'M', '남', '여'), ', ', FLOOR( (REPLACE(CURRENT_DATE, '-', '') - REPLACE(E.BIRTH, '-', '')) / 10000 ), ')') AS EMP_NAME
+			FROM employee E
+			JOIN department D ON (E.DEPT_CODE = D.DEPT_CODE)
+			WHERE EMP_STATUS = 'Y'
+		) E
+		LEFT JOIN (
+			SELECT FILE_NO
+				, ORIGIN_NAME
+				, CHANGE_NAME
+				, FILE_PATH
+				, EMP_NO
+			FROM attachment
+			WHERE FILE_STATUS = 'Y'
+		) A ON (E.EMP_NO = A.EMP_NO)
+		LEFT JOIN (
+			SELECT
+				EMP_NO
+				, CONCAT(SCHOOL_NAME, ' (', DEGREE_NAME, ", ", GRADUATE_STATUS_NAME, ")") AS SCHOOL_NAME
+				, MAJOR
+			FROM (
+				SELECT S.EMP_NO
+					, S.SCHOOL_NAME
+					, S.MAJOR
+					, D.DEGREE_NAME
+					, G.GRADUATE_STATUS_NAME
+					, S.GRADUATE_DATE
+				FROM school S
+				JOIN degree D ON (S.DEGREE_CODE = D.DEGREE_CODE)
+				JOIN graduate_status G ON (S.GRADUATE_STATUS_CODE = G.GRADUATE_STATUS_CODE)
+				WHERE S.DEGREE_CODE <![CDATA[ >= ]]> 3
+				AND S.EMP_NO = #{ emp_no }
+				ORDER BY GRADUATE_DATE DESC
+				LIMIT 1
+			) G
+		) SC ON (E.EMP_NO = SC.EMP_NO)
+		LEFT JOIN (
+			SELECT E.EMP_NO
+				, CONCAT(CAST(SUM(YEAR) AS CHAR), '년 ', CAST(SUM(MONTH) AS CHAR), '개월') AS TOTAL_CAREER
+			FROM (
+				SELECT
+					E.EMP_NO
+					, TIMESTAMPDIFF(YEAR, C.HIRE_DATE, IFNULL(RESIGNATION_DATE, CURRENT_DATE)) AS YEAR
+					, MOD(TIMESTAMPDIFF(MONTH, C.HIRE_DATE, IFNULL(RESIGNATION_DATE, CURRENT_DATE)), 12) AS MONTH
+				FROM employee E
+				JOIN career C ON (E.EMP_NO = C.EMP_NO)
+			) E
+			GROUP BY E.EMP_NO
+		) CA ON (E.EMP_NO = CA.EMP_NO)
+		LEFT JOIN (
+			SELECT
+				E.EMP_NO
+				, L.LICENSE_LIST_CODE
+			FROM employee E
+			LEFT JOIN license
+			L ON (E.EMP_NO = L.EMP_NO)
+			JOIN license_list LL ON (L.LICENSE_LIST_CODE = LL.LICENSE_LIST_CODE)
+			WHERE L.LICENSE_STATUS = 'Y'
+		) L ON (L.EMP_NO = E.EMP_NO)
+		LEFT JOIN (
+			SELECT
+				E.EMP_NO
+				, SKILL_NAME
+				, KEYWORD_NAME
+				, ETC
+			FROM employee E
+			LEFT JOIN (
+			SELECT
+				SK.EMP_NO
+				, REPLACE(GROUP_CONCAT(DISTINCT SK.SKILL_NAME ORDER BY SK.SKILL_CODE SEPARATOR ', '), '없음, ', '') AS SKILL_NAME
+			FROM (
+				SELECT
+					E.EMP_NO
+					, S.SKILL_CODE
+					, S.SKILL_NAME
+				FROM employee E
+				JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+				JOIN skill S ON (ES.SKILL_CODE = S.SKILL_CODE)
+				WHERE S.SKILL_CODE != 0
+			) SK
+			GROUP BY SK.EMP_NO
+		) SK ON (E.EMP_NO = SK.EMP_NO)
+		LEFT JOIN (
+			SELECT
+				K.EMP_NO
+				, REPLACE(GROUP_CONCAT(DISTINCT K.KEYWORD_NAME ORDER BY K.KEYWORD_CODE SEPARATOR ', '), '없음, ', '') AS KEYWORD_NAME
+			FROM (
+				SELECT
+					E.EMP_NO
+					, K.KEYWORD_CODE
+					, K.KEYWORD_NAME
+				FROM employee E
+				JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+				JOIN keyword K ON (ES.KEYWORD_CODE = K.KEYWORD_CODE)
+				WHERE K.KEYWORD_CODE != 0
+			) K
+			GROUP BY K.EMP_NO
+			) K ON (E.EMP_NO = K.EMP_NO)
+			LEFT JOIN (
+				SELECT
+					E.EMP_NO
+					, ES.ETC
+				FROM employee E
+				JOIN emp_skill ES ON (E.EMP_NO = ES.EMP_NO)
+				WHERE ES.SKILL_CODE = 0
+				AND ES.KEYWORD_CODE = 0
+			) ET ON (E.EMP_NO = ET.EMP_NO)
+		) K ON (E.EMP_NO = K.EMP_NO)
+		
+		LEFT JOIN (
+			SELECT EMP_NO
+				, CASE WHEN LONGEVITY <![CDATA[ < ]]> 6 THEN '초급'
+				WHEN LONGEVITY <![CDATA[ < ]]> 8 THEN '중급'
+				WHEN LONGEVITY <![CDATA[ < ]]> 11 THEN '고급'
+				WHEN LONGEVITY <![CDATA[ >= ]]> 11 THEN '특급'
+				END AS GRADE
+			FROM (
+				SELECT EMP_NO
+					, FLOOR((REPLACE(CURRENT_DATE, '-', '') - REPLACE(GRADUATE_DATE, '-', '')) / 10000 ) AS LONGEVITY
+				FROM (
+					SELECT EMP_NO
+						, GRADUATE_DATE
+					FROM school
+					WHERE DEGREE_CODE <![CDATA[ >= ]]> 3
+					AND EMP_NO = #{ emp_no }
+					ORDER BY GRADUATE_DATE DESC
+					LIMIT 1
+				) G
+			) G
+		) G ON (E.EMP_NO = G.EMP_NO)
+		LEFT JOIN (
+		
+			SELECT STS.EMP_NO,
+				CASE WHEN STS.START_DATE <![CDATA[ <= ]]> CURRENT_DATE AND (STS.END_DATE <![CDATA[ >= ]]> DATE_ADD(CURRENT_DATE, INTERVAL 1 MONTH) OR STS.END_DATE IS NULL) THEN '진행중'
+				WHEN STS.START_DATE <![CDATA[ <= ]]> CURRENT_DATE AND STS.END_DATE <![CDATA[ >= ]]> CURRENT_DATE AND STS.END_DATE <![CDATA[ < ]]> DATE_ADD(CURRENT_DATE, INTERVAL 1 MONTH) THEN '종료임박'
+				ELSE '대기중' END AS STATUS
+			FROM (
+				SELECT C.EMP_NO, MAX.START_DATE, P.END_DATE
+				FROM career C
+				JOIN project P ON (C.CAREER_NO = P.CAREER_NUM)
+				JOIN (
+					SELECT EMP_NO, MAX(START_DATE) AS START_DATE
+					FROM career C
+					JOIN project P ON (C.CAREER_NO = P.CAREER_NUM)
+					WHERE PROJECT_STATUS = 'Y'
+					AND EMP_NO = #{ emp_no }
+					GROUP BY EMP_NO
+				) MAX ON (MAX.START_DATE = P.START_DATE)
+			) STS
+		)
+		STS ON (E.EMP_NO = STS.EMP_NO)
+		WHERE E.EMP_NO = #{ emp_no }
+	</select>
+
+	<update id="deleteEmp">
+		UPDATE employee
+		SET EMP_STATUS = 'N'
+		, WITHDRAW_DATE = CURRENT_TIMESTAMP
+		WHERE EMP_NO = #{ emp_no }
+	</update>
+	
+	<update id="updatePwd" parameterType="Employee">
+		UPDATE employee
+		SET EMP_PWD = #{ emp_pwd }
+		WHERE EMP_NO = #{ emp_no }
+	</update>
+	
+	<select id="selectProfileImg" resultType="Attachment">
+		SELECT FILE_NO
+			, ORIGIN_NAME
+			, CHANGE_NAME
+			, FILE_PATH
+			, EMP_NO
+		FROM attachment
+		WHERE FILE_STATUS = 'Y'
+		AND EMP_NO = #{ emp_no }
+		AND BOARD_NO IS NULL
+	</select>
+	
+	<select id="findMyId" resultType="Employee">
+		SELECT EMP_ID
+			, EMP_NAME
+			, EMAIL
+		FROM employee
+		WHERE EMP_NO = (
+			SELECT EMP_NO
+			FROM employee
+			WHERE EMP_NAME = #{ emp_name }
+			AND EMAIL = #{ email }
+		)
+	</select>
+	
+	<select id="findMyPwd" resultType="Employee">
+		SELECT
+			EMP_NO
+			, EMP_NAME
+			, EMAIL
+		FROM employee
+		WHERE EMP_ID = #{ emp_id }
+		AND EMP_NAME = #{ emp_name }
+		AND EMAIL = #{ email }
+	</select>
+	
+	<select id="selectDepartment" resultType="Department">
+		SELECT DEPT_CODE
+			, DEPT_NAME
+		FROM department
+	</select>
+	
+	<select id="selectDegree" resultType="Degree">
+		SELECT DEGREE_CODE
+			, DEGREE_NAME
+		FROM degree
+	</select>
+	
+	<select id="selectGraduate" resultType="Graduate_Status">
+		SELECT GRADUATE_STATUS_CODE
+			,GRADUATE_STATUS_NAME
+		FROM graduate_status
+	</select>
+	
+	<select id="selectMiliService" resultType="Military_Service">
+		SELECT MILITARY_SERVICE_CODE
+			, MILITARY_SERVICE_NAME
+		FROM military_service
+	</select>
+	
+	<select id="selectMiliGroup" resultType="Military_Group">
+		SELECT MILITARY_GROUP_CODE
+			, MILITARY_GROUP_NAME
+		FROM military_group
+	</select>
+	
+	<select id="selectMiliRank" resultType="Militaty_Rank">
+		SELECT MILITARY_RANK_CODE
+			, MILITARY_RANK_NAME
+		FROM military_rank
+	</select>
+	
+	<select id="selectDischarge" resultType="Discharge">
+		SELECT DISCHARGE_CODE
+			, DISCHARGE_NAME
+		FROM discharge
+	</select>
+	
+	<select id="selectEduStatus" resultType="Education_Status">
+		SELECT EDU_STATUS_CODE
+			, EDU_STATUS_NAME
+		FROM education_status
+	</select>
+	
+	<select id="selectSkills" resultType="Skill">
+		SELECT S.SKILL_CODE
+			, S.SKILL_TYPE_CODE
+			, T.SKILL_TYPE_NAME
+			, S.SKILL_NAME
+		FROM skill S
+		JOIN skill_type T on(S.skill_type_code = T.skill_type_code)
+		WHERE SKILL_CODE != 0
+	</select>
+	
+	<select id="selectKeywords" resultType="Keyword">
+		SELECT KEYWORD_CODE
+			, KEYWORD_NAME
+		FROM keyword
+		WHERE KEYWORD_CODE != 0
+	</select>
+	
+	<select id="selectSkillType" resultType="Skill_Type">
+		SELECT SKILL_TYPE_CODE
+			, SKILL_TYPE_NAME
+		FROM skill_type
+		WHERE SKILL_TYPE_CODE != 0
+	</select>
+
+	<select id="selectliList" resultType="License_List">
+		SELECT LICENSE_LIST_CODE
+			, LICENSE_LIST_NAME
+		FROM license_list
+	</select>
+</mapper>
