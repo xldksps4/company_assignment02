@@ -260,12 +260,12 @@ public class EmployeeController {
         if (!Folder.exists()) {
           try {
             Folder.mkdir();
-            logger.info("Æú´õ°¡ »ý¼ºµÇ¾ú½À´Ï´Ù.");
+            logger.info("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
           } catch (Exception e) {
             e.getStackTrace();
           } 
         } else {
-          logger.info("ÀÌ¹Ì Æú´õ°¡ »ý¼ºµÇ¾î ÀÖ½À´Ï´Ù.");
+          logger.info("ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
         } 
         newImg.transferTo(new File(String.valueOf(file_path) + "/" + change_name + ext));
         this.es.modyFile(insertImg);
@@ -288,7 +288,7 @@ public class EmployeeController {
   public ModelAndView deleteEmpRequest(ModelAndView mav, @RequestParam(value = "emp_no", defaultValue = "0") int emp_no) {
     Employee emp = this.es.myInfoSearch(emp_no);
     this.mailService.sendMail(emp, 3);
-    mav.addObject("msg", "°ü¸®ÀÚ¿¡°Ô Å»Åð ¿äÃ»À» º¸³Â½À´Ï´Ù.");
+    mav.addObject("msg", "ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ Å»ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½ï¿½ï¿½Â½ï¿½ï¿½Ï´ï¿½.");
     mav.setViewName("jsonView");
     return mav;
   }
@@ -557,7 +557,7 @@ public class EmployeeController {
       } else {
         page = "redirect:/index.jsp";
         logoutEmployee(session, mav);
-        redirectAttributes.addFlashAttribute("msg", "Å»ÅðÃ³¸® µÇ¾ú½À´Ï´Ù.");
+        redirectAttributes.addFlashAttribute("msg", "Å»ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
       } 
     } else {
       page = "redirect:/error";
