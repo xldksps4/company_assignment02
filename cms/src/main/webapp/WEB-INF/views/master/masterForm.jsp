@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script defer="defer" type="text/javascript" src="resources/js/master.js"></script>
 <jsp:include page="/WEB-INF/views/common/mainNav.jsp" />
 <div class="content-area ui container">
 	<div class="contents column" id="table-area">
@@ -68,4 +69,4 @@
 <jsp:include page="/WEB-INF/views/common/sideRightNav.jsp" />
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-<script type="text/javascript" src="resources/js/master.js"></script>
+<!-- <script type="text/javascript" src="resources/js/master.js"></script> -->

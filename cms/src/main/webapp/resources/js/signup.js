@@ -10,6 +10,8 @@ idCheck = false;
 passCheck = false;
 
 /* 아이디 중복 확인 */
+//참고 : 'input 실시간 감지
+		// .on("propertychange change keyup paste input", function(){
 $("#emp_id").on("change paste keyup", function() {
 	idCheck = false;
 	$("#idResult").text("");

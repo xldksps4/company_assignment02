@@ -15,15 +15,23 @@
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="sqlSession" />
-	</bean>
-
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:mybatis-config.xml" />
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
+	<!-- ♬: 1) -->
+	<!-- PropertyPlaceholderConfigurer를 이용해  외부프로퍼티(db.properties)를 참조할 수 있게 적용 가능합니다. -->
+	<!-- 보다 쉽게 말하자면, db.properties파일에 dataSource의 객체 추가, 
+		 2)에서 ${}를 통해 데이터를 가져올 수 있습니다. -->
+<!-- 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> -->
+<!-- 		<property name="locations"> 단일값일 경우 location -->
+<!-- 			<list> -->
+<!-- 				<value>classpath:mybatis/db.properties</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+	
+	
+	<!-- ♬: 2) -->
+	<!-- 참조한 db.properties를 읽어  BasicDataSource(데이터 베이스 커넥션 풀객체) Bean에 추가합니다. -->
+	<!-- MySQL dataSource : DBCP기능, MySQL과 연결 담당 -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
 <!-- 		<property name="url" value="jdbc:mysql://localhost:3306/ndcnc?allowMultiQueries=true&amp;useSSL=false&amp;serverTimezone=UTC"> </property> -->
@@ -31,6 +39,28 @@
 		<property name="username" value="ndcnc"></property>
 		<property name="password" value="ckdduq0712~"></property>
 	</bean>
+
+	<!-- ♬: 3) -->
+	<!-- mybatis의 SqlSession을 인스턴스화 하기위한 객체 SqlSessionFactoryBean Bean을 추가합니다. -->
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSession" />
+	</bean>
+
+
+
+
+
+
+
+
+
 
 	<!-- 메일보내기 -->
 	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="mailSender">

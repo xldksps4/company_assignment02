@@ -8,6 +8,7 @@ import com.nd.cms.employee.model.service.EmployeeService;
 import com.nd.cms.employee.model.vo.Department;
 import com.nd.cms.employee.model.vo.Employee;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class MasterController {
   
   @RequestMapping({"masterForm.ma"})
   public String showMasterForm(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
-    Employee loginEmp = (Employee)session.getAttribute("loginEmp");
+    Employee loginEmp = (Employee)session.getAttribute("loginEmp");	//no, id, level_code
     String pageLink = "";
     if (loginEmp != null) {
       if (loginEmp.getEmp_level_code() == 1) {
@@ -58,10 +59,10 @@ public class MasterController {
   
   @RequestMapping({"masterPage.ma"})
   public String searchMasterList(HttpSession session, Model model, RedirectAttributes redirectAttributes, Employee emp, @RequestParam(defaultValue = "1") int page) {
-    Employee loginEmp = (Employee)session.getAttribute("loginEmp");
+	  Employee loginEmp = (Employee)session.getAttribute("loginEmp");
     String pageLink = "";
     if (loginEmp != null) {
-      if (loginEmp.getEmp_level_code() == 1) {
+      if (loginEmp.getEmp_level_code() == 1) { // ë‹ˆê°€ ì™œ 0ì´ ë“¤ì–´ì˜¬ê¹Œ?
         pageLink = "master/masterList";
         int listCount = this.ms.getMasterListCount(emp);
         PageInfo pi = Pagination.getPageInfo(page, listCount, 5);
@@ -86,13 +87,13 @@ public class MasterController {
     int result = this.ms.changeEmpLevel(emp);
     String msg = "";
     if (result > 0) {
-      msg = "ÇØ´ç »ç¿ø ±ÇÇÑ ¼öÁ¤ ¼º°ø";
+      msg = "ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
       if (emp.getEmp_level_code() < 4) {
         emp = this.ms.empInfoSearch(emp.getEmp_no());
         this.mailService.sendMail(emp, 2);
       } 
     } else {
-      msg = "ÇØ´ç »ç¿ø ±ÇÇÑ ¼öÁ¤ ½ÇÆÐ";
+      msg = "ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
     } 
     mav.addObject("msg", msg);
     mav.setViewName("jsonView");

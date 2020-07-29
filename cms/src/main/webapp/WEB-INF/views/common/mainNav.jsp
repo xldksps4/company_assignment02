@@ -10,13 +10,13 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="resources/css/semantic.min.css">
-<script type="text/javascript" src="resources/js/semantic.min.js"></script>
-<script type="text/javascript" src="resources/js/serializeObject.js"></script>
-<script type="text/javascript" src="resources/js/getUrlParams.js"></script>
+<script type="text/javascript" src="resources/js/semantic.min.js"></script> <!-- ui 라이브러리 -->
+<script type="text/javascript" src="resources/js/serializeObject.js"></script>  <!-- form.data >> object.data -->
+<script type="text/javascript" src="resources/js/getUrlParams.js"></script>	<!-- QueryString >> JSON -->
 <script defer
-	src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script> <!-- 무료 아이콘 -->
 <script
-	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- Daum 우편번호 -->
 <style type="text/css">
 #main-nav-top {
 	padding: 1em;
@@ -29,7 +29,7 @@
 }
 
 #main-nav-top img {
-	width: 100% !important;
+	width: 100% !important; /* 우선순위 강제, 유지보수 고려하면 사용 안하는 것이 나을지도. */
 }
 
 #main-nav-bottom {
@@ -57,7 +57,7 @@
 <body>
 	<!-- 최상단 네비 -->
 	<div class="ui menu" id="main-nav-top">
-		<a class="item" href="index.jsp"> <img
+		<a class="item" href="c.jsp"> <img
 			src="resources/images/logo_color.png">
 		</a>
 		<div class="right menu">

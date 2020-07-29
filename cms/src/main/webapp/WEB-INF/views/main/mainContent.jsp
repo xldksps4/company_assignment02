@@ -45,13 +45,14 @@
 	cursor: pointer;
 }
 </style>
+<!-- 이곳은 include된  mainContent.jsp 영역입니다.  -->
 <div class="ui equal width center aligned padded grid"
 	id="main-content-area">
 	<div class="row" id="main-info">
 		<div class="column">
-			<h3>ND SW기술자 경력관리시스템</h3>
-			<p>ND기술자의 경력을 체계적 관리하고,</p>
-			<p>개발자 배치를 효율적으로 관리하는 시스템 입니다.</p>
+			<h3>ND SW개발자 경력관리시스템</h3>
+			<p>ND개발자의 경력을 체계적으로 관리,</p>
+			<p>개발인력을 효율적으로 배치하는 시스템 입니다.</p>
 		</div>
 	</div>
 	<div class="row" id="main-menu">
@@ -95,16 +96,3 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-		function empInfo() {
-			if(${ loginEmp != null }) {
-				location.href="empInfoForm.em?info_code=1";
-			}else {
-				location.href="signinForm.em";
-			}
-		};
-		
-		function notice(no) {
-			location.href="detailNotice.bo?board_no=" + no;
-		}
-	</script>
