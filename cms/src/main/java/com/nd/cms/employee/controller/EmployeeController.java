@@ -60,11 +60,13 @@ public class EmployeeController {
     this.mailService = mailService;
   }
   
+  //go to Login Form
   @RequestMapping({"signinForm.em"})
   public String showSigninForm() {
     return "employee/signinForm";
   }
   
+  //Login res
   @RequestMapping({"signin.em"})
   public String signin(Employee emp, RedirectAttributes redirectAttributes, HttpSession session) {
     int code = 0;

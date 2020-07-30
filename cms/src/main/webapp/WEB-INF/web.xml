@@ -10,8 +10,9 @@
 			classpath:root-context.xml <!-- resources폴더로 뺀 이유 ?  -->
 			<!-- 비밀번호 보안 추가 : config 폴더에 xml 추가할 것 -->
 			/WEB-INF/config/spring-security.xml
-		</param-value>
+		</param-value>vg
 	</context-param>
+	
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

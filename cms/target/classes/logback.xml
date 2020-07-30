@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>
+    </encoder>
+  </appender>
+  
+  <logger name="jdbc" level="OFF"/>
+  
+  <logger name="jdbc.sqlonly" level="OFF"/> 		<!-- SQL문만을 로그로 남깁니다. pstmt의 경우, ? >> argument값으로 대체된 SQL문이 보여집니다. -->
+  <logger name="jdbc.sqltiming" level="DEBUG"/>		<!-- SQL문 실행 소요 시간 정보 -->
+  <logger name="jdbc.audit" level="OFF"/>			<!-- ResultSet을 제외한 모든 JDBC 호출 정보를 로그로 남긴다. -->
+  <logger name="jdbc.resultset" level="OFF"/>		<!-- ResultSet을 포함한 모든 JDBC 호출 정보를 로그로 남긴다. -->
+  <logger name="jdbc.resultsettable" level="DEBUG"/><!-- SQL 결과 조회된 데이터의 table을 로그로 남긴다. -->
+  <logger name="jdbc.connection" level="OFF"/>
+  
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+  </root>
+  
+</configuration>

@@ -288,7 +288,13 @@
 		    <version>2.10.3</version>
 		</dependency>
 
-
+		<!-- log4jdbc, 로그를 보다 직관적으로 찍어주는 라이브러리 -->
+		<dependency>
+			<groupId>org.bgee.log4jdbc-log4j2</groupId>
+			<artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+			<version>1.16</version>
+		</dependency>
+		
 	</dependencies>
 	
     <build>

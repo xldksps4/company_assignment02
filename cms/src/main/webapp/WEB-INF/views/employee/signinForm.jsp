@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<script defer type="text/javascript" src="resources/js/signin.js"></script>
+
 <style type="text/css">
 #signin-area {
 	width: 70% !important;
@@ -69,5 +72,3 @@ label {
 
 <jsp:include page="/WEB-INF/views/common/sideRightNav.jsp" />
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
-<script type="text/javascript" src="resources/js/signin.js"></script>
