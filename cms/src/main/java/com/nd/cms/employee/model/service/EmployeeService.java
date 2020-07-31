@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
+	
+  //로그인
   Employee signin(Employee paramEmployee) throws Exception;
   
   int idCheck(String paramString);

@@ -38,7 +38,7 @@ label {
 					<input type="password" placeholder="비밀번호를 입력하세요." name="emp_pwd" onKeyDown="onKeyDown()">
 				</div>
 				<div class="field" id="find-area">
-					<p id="signin-msg" style="color: red;">
+					<span id="signin-msg" style="display:none"></span>
 				
 						<c:if test="${ code eq 1 }">
 							아이디나 비밀번호가 일치하지 않습니다.

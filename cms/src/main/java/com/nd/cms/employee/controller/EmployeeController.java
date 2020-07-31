@@ -71,25 +71,41 @@ public class EmployeeController {
   public String signin(Employee emp, RedirectAttributes redirectAttributes, HttpSession session) {
     int code = 0;
     try {
-      Employee loginEmp = this.es.signin(emp);
-      if (loginEmp != null && loginEmp.getEmp_level_code() < 4) {
+      Employee loginEmp = this.es.signin(emp);	// 암호화 통한 로그인, 로그인 기록 저장
+      
+      if (loginEmp != null && loginEmp.getEmp_level_code() < 4) {	// 1~3 등급
         session.setAttribute("loginEmp", loginEmp);
         return "redirect:/index.jsp";
       } 
-      if (loginEmp != null && loginEmp.getEmp_level_code() == 4) {
+      if (loginEmp != null && loginEmp.getEmp_level_code() == 4) {	// 승인 보류
         code = 2;
-      } else if (loginEmp != null && loginEmp.getEmp_level_code() == 5) {
+      } else if (loginEmp != null && loginEmp.getEmp_level_code() == 5) {	// 가입 거절
         code = 3;
-      } else {
+      } else {		// 아이디 or 비번 불일치
         code = 1;
       } 
-    } catch (Exception e) {
+    } catch (Exception e) {	// 로그인 실패
       code = 4;
     } 
     redirectAttributes.addFlashAttribute("code", Integer.valueOf(code));
     redirectAttributes.addFlashAttribute("emp_id", emp.getEmp_id());
     return "redirect:/signinForm.em";
+    
+    /*
+     	Q1. addFlashAttribute는 object를 담을 때 사용한다던데 기본타입담는데 사용한 이유가?
+     	Q2. 어차피 int인데 Integer.valueOf를 사용해 형변환 시도한 이유는? 
+     
+     */
+    
   }
+  
+  
+  
+  
+  
+  
+  
+  
   
   @RequestMapping({"logout.em"})
   public ModelAndView logoutEmployee(HttpSession session, ModelAndView mav) {
