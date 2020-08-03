@@ -88,6 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.ed.idCheck(emp_id);
 	}
 
+	//회원가입 dept리스트를 들고 화면이동
 	public int signup(Employee emp) {
 		String encPassword = this.passwordEncoder.encode(emp.getEmp_pwd());
 		emp.setEmp_pwd(encPassword);

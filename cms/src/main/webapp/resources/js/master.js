@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 //검색
 function search(page) {
-	console.log("page >>"+ page);
+	console.log("[master.js]__page >>"+ page);
 	console.log("emp_level_code >> "+emp_level_code);
 	$.ajax({
 		url : "masterPage.ma",

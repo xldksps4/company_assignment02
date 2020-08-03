@@ -9,25 +9,61 @@ $(".phone").on("keyup", function() {
 idCheck = false;
 passCheck = false;
 
-/* 아이디 중복 확인 */
+/* 아이디 유효성 검사, 중복검사 버튼 클릭 가능하게 만들어줌 */
 //참고 : 'input 실시간 감지
 		// .on("propertychange change keyup paste input", function(){
 $("#emp_id").on("change paste keyup", function() {
-	idCheck = false;
+	
+	let idRegExp = new RegExp("^(?=.*[a-zA-Z])(?=.*\d).{6,20}$"); //영문숫자조합, 6~20	
+	let idValue = document.getElementById("emp_id").value;
+	let res = document.getElementById("idResult")
+	let idBtn = document.getElementById("idCheckBtn");
+
+	/* default */
 	$("#idResult").text("");
 	$("#idCheckBtn").text("중복체크");
 	$("#idCheckBtn").removeClass();
-
-	if ($("#emp_id").val() == "") {
-		$("#idCheckBtn").addClass("ui button");
-		$("#idCheckBtn").removeAttr("onclick");
-
-	} else {
-		$("#idCheckBtn").addClass("ui primary button");
-		$("#idCheckBtn").attr("onclick", "checkId()");
+	
+	
+	//유효성검사 통과
+	if(idRegExp.test(idValue) == true){
+		
+		idBtn.removeAttribute("class");
+		idBtn.removeAttribute("onclick");
+		
+		idBtn.setAttribute("class","ui primary button");
+		idBtn.setAttribute("onclick", "checkId()");
 	}
+	
+	//유효성검사 통과 실패
+	else if(idValue == "" || !idRegExp.test(idValue)){
+		
+		idBtn.setAttribute("class", "ui button");
+		idBtn.removeAttribute("onclick");
+		
+		res.textContent = "";
+		res.style.display = "block";
+		res.style.color = "red";
+		res.textContent = "아이디는 영어+숫자, 6~20자를 입력해 주세요";
+		
+	}
+	
+
+/* 선배님 코드 */	
+//	idCheck = false; 	/* Q : 얘는 용도가 뭔지 모르겠음 */
+	
+//	if ($("#emp_id").val() == "") {
+//		$("#idCheckBtn").addClass("ui button");
+//		$("#idCheckBtn").removeAttr("onclick");
+//
+//	} else {
+//		$("#idCheckBtn").addClass("ui primary button");
+//		$("#idCheckBtn").attr("onclick", "checkId()");
+//	}
 });
 
+
+/* 아이디 중복 검사 */
 function checkId() {
 	var emp_id = $("#emp_id").val();
 
@@ -56,7 +92,7 @@ function checkId() {
 			$("#idCheckBtn").addClass("ui primary button");
 			$("#idCheckBtn").attr("onclick", "checkId()");
 			$("#idResult").css("color", "red");
-			msg = "중복된 아이디 입니다.";
+			msg = "사용 불가능한 아이디 입니다.";
 		}
 
 		$("#idResult").text(msg);
