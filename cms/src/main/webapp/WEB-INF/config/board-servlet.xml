@@ -38,7 +38,9 @@
 	모든 ajax 처리는 JsonView가 처리 함으로써 단지 JsonView가 선언된 스프링 빈 id를
 	ModelAndView의 "setViewName" 메서드에 선언만 하면 됩니다. 
 	
-	Q : 그렇다면... 파라미터로 받는 값은 상관 없어지나?
+	Q1 : 그렇다면... 파라미터로 받는 값은 상관 없어지나?
+	
+	Q2 : org.springframework.web.servlet.view.json.MappingJacksonJsonView와 의 차이점은?
 	-->
 	<beans:bean id="jsonView"
 		class="net.sf.json.spring.web.servlet.view.JsonView">

@@ -10,13 +10,58 @@ $(document).ready(function() {
 function search(page) {
 	console.log("[master.js]__page >>"+ page);
 	console.log("emp_level_code >> "+emp_level_code);
-	$.ajax({
-		url : "masterPage.ma",
-		data : {
+	
+	//JSON.stringify : Object >> JSON.stringify
+	let data = 
+		{
 			emp_name : emp_name,
 			emp_level_code : emp_level_code,
 			page : page
 		}
+	
+	console.dir(data)
+
+	
+	
+//	//Ajax API ( post : 개발자 도구 - Network - 해당페이지 request header확인 시 payload로 데이터 전송 )
+//	const xhr = new XMLHttpRequest();
+//	
+//	// onreadystatechange : 준비상태(200, 404, 500...)가 바뀌었을떄 트리거 되는 이벤트
+//	xhr.onreadystatechange = function(data) { 
+//        if(xhr.readyState === xhr.DONE){      // xhr.DONE는 서버에서 정상 응답되었을때
+//           if (xhr.status === 200 || xhr.status === 201) {
+//              // 응답시 받은 데이터 확인
+//              console.log("성공 데이터 확인 Text : " + xhr.responseText); // 문자열 반환
+//              console.log("xhr.responseXML : " + xhr.responseXML ); // 객체로 반환
+//              console.log("pi 데이터 : "+ data.pi)
+// //             alert('성공데이터 알림 : '+ data)
+//              $("#masterTable > tbody").remove();
+//        		$("#masterTable > tfoot").remove();     		
+//        		$("#masterTable").append();
+//           } else {
+//              console.error("서버 에러 : " + xhr.response);
+//           }
+//        } else if(xhr.readyState === 4){      // 네트워크 문제 같은것으로 서버에 가지 못했을때 404 
+////           console.error("네트워크 에러 : " + xhr.responseText);
+//        	console.error(`네트워크 에러 : [상태]__ ${xhr.status} : [상태텍스트]__${xhr.statusTextx}`)
+//        }
+//     }
+//	
+//	// ** GET, POST등을 대문자로 표기하지 않으면 일부 브라우저에서 처리할 수 없음
+//	xhr.open("POST","masterPage.ma", true);
+//	
+//	//Request Header >> Content-type ( MIME-type ) 
+//	//application/x-www-form-urlencoded / application/json
+//	xhr.setRequestHeader("Content-type","application/json")
+//	
+//	// ** send()는 제일 마지막에 위치하도록.
+//	xhr.send(JSON.stringify(data));
+	
+	
+	$.ajax({
+		url : "masterPage.ma",
+	//	data : JSON.stringify(data)
+		data : data
 	}).done(function(data) {
 		$("#masterTable > tbody").remove();
 		$("#masterTable > tfoot").remove();
@@ -25,6 +70,8 @@ function search(page) {
 		alert("접속에러");
 	});
 }
+
+
 
 //검색 권한 변경 시 검색 실행
 $("select[name=emp_level_code]").on("change", function() {

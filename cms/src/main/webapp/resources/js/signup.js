@@ -60,6 +60,7 @@ $("#emp_id").on("change paste keyup", function() {
 //		$("#idCheckBtn").addClass("ui primary button");
 //		$("#idCheckBtn").attr("onclick", "checkId()");
 //	}
+	
 });
 
 

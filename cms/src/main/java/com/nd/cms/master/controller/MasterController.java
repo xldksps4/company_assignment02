@@ -17,8 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -58,20 +61,34 @@ public class MasterController {
   }
   
   @RequestMapping({"masterPage.ma"})
-  public String searchMasterList(HttpSession session, Model model, RedirectAttributes redirectAttributes, Employee emp, @RequestParam(defaultValue = "1") int page) {
+//  @ResponseBody
+  public String searchMasterList(HttpSession session, Model model, 
+		  RedirectAttributes redirectAttributes, Employee emp, 
+		  @RequestParam(defaultValue = "1") int page
+		  ) {
+	  logger.info("[Controller]__회원 등급 페이지 입니다.");  
+	  logger.info("[Ajax]__"+ page);
+
+	  
 	  Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-    String pageLink = "";
+      String pageLink = "";
     if (loginEmp != null) {
-      if (loginEmp.getEmp_level_code() == 1) { // 니가 왜 0이 들어올까?
+      if (loginEmp.getEmp_level_code() == 1) {
         pageLink = "master/masterList";
         int listCount = this.ms.getMasterListCount(emp);
         PageInfo pi = Pagination.getPageInfo(page, listCount, 5);
-        Map<String, Object> map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("emp", emp);
         map.put("pi", pi);
         List<Employee> empList = this.ms.getMasterList(map);
+        map.put("empList", empList);
+        
+        /* POST방식에선 주석 */
         model.addAttribute("pi", pi);
         model.addAttribute("empList", empList);
+        
+        logger.info("[result]__pi >>>>"+ pi);
+        logger.info("[result]__empList"+ empList);
       } else {
         redirectAttributes.addAttribute("type", Integer.valueOf(2));
         pageLink = "redirect:/error";
@@ -87,13 +104,13 @@ public class MasterController {
     int result = this.ms.changeEmpLevel(emp);
     String msg = "";
     if (result > 0) {
-      msg = "�ش� ��� ���� ���� ����";
+      msg = "권한이 변경되었습니다.";
       if (emp.getEmp_level_code() < 4) {
         emp = this.ms.empInfoSearch(emp.getEmp_no());
         this.mailService.sendMail(emp, 2);
       } 
     } else {
-      msg = "�ش� ��� ���� ���� ����";
+      msg = "권한이 변경되지 않았습니다."; 
     } 
     mav.addObject("msg", msg);
     mav.setViewName("jsonView");

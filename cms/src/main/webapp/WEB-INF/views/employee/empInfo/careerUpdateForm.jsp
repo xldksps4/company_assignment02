@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<script defer type="text/javascript" src="resources/js/user/infoupdate/careerformselect.js"></script>
 <style type="text/css">
 #side-tap {
 	width: 100%;
@@ -45,10 +46,12 @@
 
 	<div id="side-tap">
 		<div class="ui secondary menu">
-			<a class="item active" data-tab="sub-1">학력사항</a> <a class="item"
-				data-tab="sub-2">병역사항</a> <a class="item" data-tab="sub-3">교육사항</a>
-			<a class="item" data-tab="sub-4">경력사항</a> <a class="item"
-				data-tab="sub-5">자격증사항</a> <a class="item" data-tab="sub-6">보유기술</a>
+			<a class="item active" data-tab="sub-1">학력사항</a> 
+			<a class="item" data-tab="sub-2">병역사항</a> 
+			<a class="item" data-tab="sub-3">교육사항</a>
+			<a class="item" data-tab="sub-4">경력사항</a> 
+			<a class="item" data-tab="sub-5">자격증사항</a> 
+			<a class="item" data-tab="sub-6">보유기술</a>
 		</div>
 		<div class="ui active tab segment" data-tab="sub-1">
 			<jsp:include
