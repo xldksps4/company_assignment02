@@ -46,17 +46,17 @@
 
 	<div id="side-tap">
 		<div class="ui secondary menu">
-<%-- 		버퍼크기 : <%=out.getBufferSize() %><br> --%>
-<%-- 		남은크기 : <%=out.getRemaining() %><br> --%>
-<%-- 		autoflush :<%=out.isAutoFlush() %><br> --%>
-			<a class="item" data-tab="sub-1">학력사항</a> 
-			<a class="item" data-tab="sub-2">병역사항</a> 
-			<a class="item" data-tab="sub-3">교육사항</a>
-			<a class="item active" data-tab="sub-4">경력사항</a> 
-			<a class="item" data-tab="sub-5">자격증사항</a> 
-			<a class="item" data-tab="sub-6">보유기술</a>
+		버퍼크기 : <%=out.getBufferSize() %><br>
+		남은크기 : <%=out.getRemaining() %><br>
+		autoflush :<%=out.isAutoFlush() %><br>
+			<a class="item active" data-tab="sub-1" onclick="return dataTabReturn();">학력사항</a> 
+			<a class="item" data-tab="sub-2" onclick="return dataTabReturn();">병역사항</a> 
+			<a class="item" data-tab="sub-3" onclick="return dataTabReturn();">교육사항</a>
+			<a class="item" data-tab="sub-4" onclick="return dataTabReturn();">경력사항</a> 
+			<a class="item" data-tab="sub-5" onclick="return dataTabReturn();">자격증사항</a> 
+			<a class="item" data-tab="sub-6" onclick="return dataTabReturn();">보유기술</a>
 		</div>
-		<div class="ui tab segment" data-tab="sub-1">
+		<div class="ui active tab segment" data-tab="sub-1">
 			<jsp:include
 				page="/WEB-INF/views/employee/empInfo/careerForm/schoolForm.jsp"/>
 		</div>
@@ -68,7 +68,7 @@
 			<jsp:include
 				page="/WEB-INF/views/employee/empInfo/careerForm/eduForm.jsp"/>
 		</div>
-		<div class="ui active tab segment" data-tab="sub-4">
+		<div class="ui tab segment" data-tab="sub-4">
 			<jsp:include
 				page="/WEB-INF/views/employee/empInfo/careerForm/careerForm.jsp"/>
 		</div>

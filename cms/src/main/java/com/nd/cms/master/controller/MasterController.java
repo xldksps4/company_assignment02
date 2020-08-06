@@ -62,7 +62,8 @@ public class MasterController {
   
   @RequestMapping({"masterPage.ma"})
 //  @ResponseBody
-  public String searchMasterList(HttpSession session, Model model, 
+// Post는 ModelAndView 
+  public String searchMasterList(HttpSession session, Model model, ModelAndView mav,
 		  RedirectAttributes redirectAttributes, Employee emp, 
 		  @RequestParam(defaultValue = "1") int page
 		  ) {
@@ -87,16 +88,28 @@ public class MasterController {
         model.addAttribute("pi", pi);
         model.addAttribute("empList", empList);
         
+        /* GET방식에선 주석 */
+//      mav.addObject("pi",pi);
+//      mav.addObject("empList",empList);
+//      mav.setViewName("jsonView");
+        
         logger.info("[result]__pi >>>>"+ pi);
         logger.info("[result]__empList"+ empList);
+
+
+        
+        
       } else {
         redirectAttributes.addAttribute("type", Integer.valueOf(2));
         pageLink = "redirect:/error";
+
       } 
     } else {
       pageLink = "redirect:/signinForm.em";
     } 
     return pageLink;
+//    return mav;
+    
   }
   
   @RequestMapping({"changeLevel.ma"})

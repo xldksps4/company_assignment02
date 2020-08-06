@@ -8,9 +8,9 @@ $(document).ready(function() {
 
 //검색
 function search(page) {
-	console.log("[master.js]__page >>"+ page);
-	console.log("emp_level_code >> "+emp_level_code);
-	
+	console.log("[master.js]__page >>"+ typeof page);
+	console.log("emp_level_code >> "+ typeof emp_level_code);
+	console.log("emp_name >> "+ typeof emp_name)
 	//JSON.stringify : Object >> JSON.stringify
 	let data = 
 		{
