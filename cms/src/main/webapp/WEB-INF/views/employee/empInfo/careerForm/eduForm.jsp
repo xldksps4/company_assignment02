@@ -24,7 +24,9 @@
 		<div class="ui form">
 			<div class="inline fields">
 				<div class="three wide field">
-					<label>교육과정명<span class="required-info">*</span></label>
+					<label>교육과정명
+<!-- 						<span class="required-info">*</span> -->
+					</label>
 				</div>
 				<div class="thirteen wide field">
 					<input type="text" name="edu_name">
@@ -34,7 +36,9 @@
 		<div class="ui form">
 			<div class="inline fields">
 				<div class="three wide field">
-					<label>교육기관명<span class="required-info">*</span></label>
+					<label>교육기관명
+<!-- 						<span class="required-info">*</span> -->
+					</label>
 				</div>
 				<div class="thirteen wide field">
 					<input type="text" name="edu_institute_name">
@@ -44,7 +48,9 @@
 		<div class="ui form">
 			<div class="inline fields">
 				<div class="three wide field">
-					<label>교육기간<span class="required-info">*</span></label>
+					<label>교육기간
+<!-- 						<span class="required-info">*</span> -->
+					</label>
 				</div>
 				<div class="four wide field">
 					<input type="date" name="edu_start_date" max="9999-12-31">

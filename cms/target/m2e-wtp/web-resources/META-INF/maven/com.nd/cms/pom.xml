@@ -10,7 +10,7 @@
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.1.5.RELEASE</org.springframework-version>
-		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>	
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
 	<dependencies>
@@ -231,14 +231,14 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${org.aspectj-version}</version>
+			<version>${org.aspectj-version}</version>	<!-- 수정 전, 1.9.2 -->
 		</dependency>
 		
 		<!-- AspectJ tools : 런타임 프로그램 -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
-            <version>${org.aspectj-version}</version>
+            <version>${org.aspectj-version}</version> 	<!-- 수정 전, 1.9.2 -->
         </dependency>
 
 		<!-- https://mvnrepository.com/artifact/cglib/cglib -->

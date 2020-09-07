@@ -20,8 +20,9 @@ class Xhr {
            3. get사용은  this.url
            4. set사용은  this.url = value
     */
-    get url() {
-       return this._url;
+    
+   get url() {
+      return this._url;
    }    
    set url(url){
       this._url = url;

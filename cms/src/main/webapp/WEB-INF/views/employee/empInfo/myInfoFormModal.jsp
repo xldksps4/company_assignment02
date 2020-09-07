@@ -7,7 +7,8 @@
 	<div class="ui modal" id="profileImgModal">
 
 		<div class="header">프로필 사진</div>
-		<div class="image content" style="justify-content: center;">
+		<div class="image con
+		tent" style="justify-content: center;">
 			<div class="ui medium image modal-image">
 				<h4 class="ui header">이전 사진</h4>
 				<img src="resources/images/noImage.png" id="oldImg">
@@ -20,7 +21,7 @@
 			<div class="ui medium image modal-image" id="modyImgArea"
 				data-tooltip="클릭해서 이미지 등록하기" data-position="left center"
 				onclick="modyProfile()">
-				<h4 class="ui header">변경 사진</h4>
+				<h4 class="ui header">변경 사진 ( 사진 넣을 영역을 클릭해주세요 )</h4>
 				<img src="resources/images/noImage.png" id="modyProfileImg">
 			</div>
 		</div>

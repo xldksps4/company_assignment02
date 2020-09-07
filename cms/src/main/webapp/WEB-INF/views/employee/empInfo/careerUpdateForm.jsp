@@ -49,12 +49,12 @@
 <%-- 		버퍼크기 : <%=out.getBufferSize() %><br> --%>
 <%-- 		남은크기 : <%=out.getRemaining() %><br> --%>
 <%-- 		autoflush :<%=out.isAutoFlush() %><br> --%>
-			<a class="item" data-tab="sub-1">학력사항</a> 
-			<a class="item" data-tab="sub-2">병역사항</a> 
-			<a class="item" data-tab="sub-3">교육사항</a>
-			<a class="item active" data-tab="sub-4">경력사항</a> 
-			<a class="item" data-tab="sub-5">자격증사항</a> 
-			<a class="item" data-tab="sub-6">보유기술</a>
+			<a id="sub1" class="item" data-tab="sub-1" >학력사항</a> 
+			<a id="sub2" class="item" data-tab="sub-2">병역사항</a> 
+			<a id="sub3" class="item" data-tab="sub-3">교육사항</a>
+			<a id="sub4" class="item active" data-tab="sub-4">경력사항</a> 
+			<a id="sub5" class="item" data-tab="sub-5">자격증사항</a> 
+			<a id="sub6" class="item" data-tab="sub-6">보유기술</a>
 		</div>
 		<div class="ui tab segment" data-tab="sub-1">
 			<jsp:include

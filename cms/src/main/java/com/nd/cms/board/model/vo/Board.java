@@ -131,4 +131,6 @@ public class Board implements Serializable {
 				+ this.board_type_code + ", board_type_name=" + this.board_type_name + ", emp_no=" + this.emp_no
 				+ ", emp_name=" + this.emp_name + ", files=" + this.files + "]";
 	}
+
+	
 }

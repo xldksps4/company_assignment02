@@ -1322,6 +1322,7 @@
 		WHERE EMP_NO = #{ emp_no }
 	</update>
 	
+	<!-- 비밀번호 변경 -->
 	<update id="updatePwd" parameterType="Employee">
 		UPDATE employee
 		SET EMP_PWD = #{ emp_pwd }

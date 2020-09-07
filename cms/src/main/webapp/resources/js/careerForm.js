@@ -71,7 +71,9 @@ $(document).off("click", ".addProject").on("click", ".addProject", function() {
 
 //프로젝트 목록 클릭 시 프로젝트 폼에 출력
 function showProject(item) {
+
 	var menuArr = [];
+	
 	menuArr.push({
 		name : "career_num",
 		value : 0 + item.data("career_num")
@@ -125,6 +127,7 @@ function showProject(item) {
 		value : item.data("etc")
 	});
 
+	// for in 과 동일 ( 객체 반복문 )
 	$.each(menuArr, function(index, arr) {
 		item.parents(".projectArea").find("." + arr.name).val(arr.value);
 	});

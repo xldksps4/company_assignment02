@@ -57,7 +57,7 @@
 <body>
 	<!-- 최상단 네비 -->
 	<div class="ui menu" id="main-nav-top">
-		<a class="item" href="c.jsp"> <img
+		<a class="item" href="mainNotice.bo"> <img
 			src="resources/images/logo_color.png">
 		</a>
 		<div class="right menu">

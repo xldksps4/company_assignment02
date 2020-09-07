@@ -2,9 +2,10 @@
 /*
   ♬ : form 데이터를 Object로 만들어주는 함수 ( serializeArray() ) 사용
  	참고 : https://kingbbode.tistory.com/28
+ 		 https://gracefullight.dev/2016/12/28/jQuery-serializeObject-form%EC%9D%84-json%EC%9C%BC%EB%A1%9C-%EB%B3%80%ED%99%98/
  */
 
-//사용용도 : 아직 모름
+//사용용도 : 비동기 submit 진행 시  form 값을 확인해보고 json object 로 받아 한 번에 request 를 날리고 싶을 때 유용하다.
 $.fn.serializeObject = function() {
 	"use strict"
 	var result = {}
@@ -26,7 +27,7 @@ $.fn.serializeObject = function() {
 
 /*
  위 설명에 대한 예 ) 
- ** 서버로 보놰야 할 데이터 스펙     vs    serializeObject 결과
+ ** 서버로 보내야 할 데이터 스펙     vs    serializeObject 결과
 { 						ㅣ	{
  title : "", 			ㅣ		title : "",
  statudents : [			ㅣ		name1 : "",

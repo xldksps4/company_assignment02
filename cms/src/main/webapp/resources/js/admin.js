@@ -156,11 +156,14 @@ $(document).on("click", "#searchListTable tbody tr", function() {
 });
 
 $('.menu .item').tab();
+tab_cnt +=1;//tab함수 실행 위치 확인 위한 콘솔입니다. empinfo.js에 위치해있습니다.
+console.log(tab_cnt)
+
 $(document).on(".ui.accordion").accordion();
 
 //사원정보수정
 function modyEmp(emp_no) {
-	location.href="empInfoForm.em?emp_no=" + emp_no; 
+	location.href="empInfoForm.em?emp_no=" + emp_no; x
 }
 
 //사원삭제

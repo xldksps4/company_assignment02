@@ -9,6 +9,6 @@ function empInfo() {
 	
 }
 		
-function notice(no) {
-	location.href="detailNotice.bo?board_no=" + no;
+function notice(board_no) {
+	location.href = "detailNotice.bo?board_no=" + board_no;
 }
