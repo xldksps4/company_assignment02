@@ -114,7 +114,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version> <!-- 4.7 >> 4.12 for mysql && mybatis test -->
+			<version>4.13.1</version> <!-- 4.7 >> 4.13.1 for mysql && mybatis test -->
 			<scope>test</scope>
 		</dependency>
 
