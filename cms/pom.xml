@@ -181,7 +181,7 @@
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.4.6</version> <!-- 3.5.4 , mybatis-spring : 2.0.3 -->
+			<version>3.5.6</version> <!-- 3.5.4 , mybatis-spring : 2.0.3 -->
 		</dependency>
 
 		<!-- MyBatis가 해당 기능을 해주는것으로 Dto를 테이블 칼럼과 일치 시키면 자동 매핑되게 해주는 기능을 수행한다. -->
